@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>StateViewController Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/StateViewController" class="dashAnchor"></a>
+
+    <a title="StateViewController Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+           Docs
+        </a>
+         (96% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/formbound/StateViewController">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html"> Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      StateViewController Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StateViewController.html">StateViewController</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:19StateViewController07defaultA24TransitioningCoordinatorAA0abc10TransitionF0_pSgvp">defaultStateTransitioningCoordinator</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Notification.html">Notification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Notification/Name.html">– Name</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateViewControllerTransitionCoordinator.html">StateViewControllerTransitionCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateViewControllerTransitioning.html">StateViewControllerTransitioning</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>StateViewController</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">StateViewController</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">UIViewController</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                </div>
+              </div>
+            <p>A container view controller that manages the appearance of one or more child view controller for any given state.</p>
+<h2 id='overview' class='heading'>Overview</h2>
+
+<p>This class is designed to make stateful view controller programming easier. Typically in iOS development,
+views representing multiple states are managed in one single view controller, leading to large view controller
+classes that quickly become hard to work with and overlook at a glance. For instance, a view controller may
+display an activity indicator while a network call is performed, leaving the view controller to have to directly
+manipulate view hierarhy for each state. Furthermore, the state of a view controller tends to be represented by
+conditions that are hard to synchronize, easily becoming a source of bugs and unexpected behavior.
+With <code>StateViewController</code> each state can be represented by one or more view controllers.
+This allows you to composite view controllers in self-contained classes resulting in smaller view
+controllers and better ability modularize your view controller code, with clear separation between states.</p>
+<h2 id='subclassing-notes' class='heading'>Subclassing notes</h2>
+
+<p>You must subclass <code>StateViewController</code> and define a state for the view controller you are creating.</p>
+<pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">MyViewControllerState</span><span class="p">:</span> <span class="kt">Equatable</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">loading</span>
+    <span class="k">case</span> <span class="n">ready</span>
+<span class="p">}</span>
+</code></pre>
+
+<p><strong>Note:</strong> Your state must conform to <code>Equatable</code> in order for <code>StateViewController</code> to distinguish between states.</p>
+
+<p>Override <code>loadAppearanceState()</code> to determine which state is being represented each time this view controller
+is appearing on screen. In this method is appropriate to query your model layer to determine whether data needed
+for a certain state is available or not.</p>
+<pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">loadAppearanceState</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">MyViewControllerState</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">isDataAvailable</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">.</span><span class="n">ready</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">.</span><span class="n">loading</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>To determine which content view controllers represent a particular state, you must override
+<code>contentViewControllers(for:)</code>.</p>
+<pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">contentViewControllers</span><span class="p">(</span><span class="k">for</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">MyViewControllerState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">UIViewController</span><span class="p">]</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="n">state</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nv">loading</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="kt">ActivityIndicatorViewController</span><span class="p">()]</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nv">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">myContentViewController</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Callback methods are overridable, notifying you when a state transition is being performed, and what child
+view controllers are being presented as a result of a state transition.</p>
+
+<p>Using <code>willTransition(to:animated:)</code> you should prepare view controller representing the state being transition to
+with the appropriate data.</p>
+<pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">willTransition</span><span class="p">(</span><span class="n">to</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">MyViewControllerState</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="n">state</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nv">ready</span><span class="p">:</span>
+        <span class="n">myContentViewController</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">myLoadedContent</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nv">loading</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Overriding <code>didTransition(to:animated:)</code> is an appropriate place to invoke methods that eventually results in
+a state transition being requested using <code>setNeedsTransition(to:animated:)</code>, as it ensures that any previous state
+transitions has been fully completed.</p>
+<pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">didTransition</span><span class="p">(</span><span class="n">from</span> <span class="nv">previousState</span><span class="p">:</span> <span class="kt">MyViewControllerState</span><span class="p">?,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="n">state</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nv">ready</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nv">loading</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">loadData</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
+            <span class="k">self</span><span class="o">.</span><span class="n">myLoadedContent</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="k">self</span><span class="o">.</span><span class="nf">setNeedsTransition</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="o">.</span><span class="n">ready</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>You may also override <code>loadContentViewControllerContainerView()</code> to provide a custom container view for your
+content view controllers, allowing you to manipulate the view hierarchy above and below the content view
+controller container view.</p>
+<h2 id='animating-state-transitions' class='heading'>Animating state transitions</h2>
+
+<p>By default, no animations are performed between states. To enable animations, you have three options:</p>
+
+<ul>
+<li>Set <code><a href="../Global Variables.html#/s:19StateViewController07defaultA24TransitioningCoordinatorAA0abc10TransitionF0_pSgvp">defaultStateTransitioningCoordinator</a></code></li>
+<li>Override <code>stateTransitionCoordinator(for:)</code> in your <code>StateViewController</code> subclasses</li>
+<li>Conform view controllers contained in <code>StateViewController</code> to <code><a href="../Protocols/StateViewControllerTransitioning.html">StateViewControllerTransitioning</a></code>.</li>
+</ul>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/State%20transitioning"></a>
+                <a name="//apple_ref/swift/Section/State transitioning" class="dashAnchor"></a>
+                <a href="#/State%20transitioning">
+                  <h3 class="section-name">State transitioning</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC28isTransitioningBetweenStatesSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isTransitioningBetweenStates" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC28isTransitioningBetweenStatesSbvp">isTransitioningBetweenStates</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates whether the view controller currently is transitioning between states.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isTransitioningBetweenStates</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L255-L257">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC07currentA0xvp"></a>
+                    <a name="//apple_ref/swift/Property/currentState" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC07currentA0xvp">currentState</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates the current state, or invokes <code><a href="../Classes/StateViewController.html#/s:19StateViewControllerAAC014loadAppearanceA0xyF">loadAppearanceState()</a></code> is a current state transition has not
+yet began.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">currentState</span><span class="p">:</span> <span class="kt">State</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L261-L263">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC013hasDeterminedA0Sbvp"></a>
+                    <a name="//apple_ref/swift/Property/hasDeterminedState" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC013hasDeterminedA0Sbvp">hasDeterminedState</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">hasDeterminedState</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L268-L270">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC014loadAppearanceA0xyF"></a>
+                    <a name="//apple_ref/swift/Method/loadAppearanceState()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC014loadAppearanceA0xyF">loadAppearanceState()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Loads a state that should represent this view controller immediately as this view controller
+is being presented on screen, and returns it.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>As <code><a href="../Classes/StateViewController.html#/s:19StateViewControllerAAC07currentA0xvp">currentState</a></code> may invoke use this method you cannot access <code><a href="../Classes/StateViewController.html#/s:19StateViewControllerAAC07currentA0xvp">currentState</a></code> inside this
+method without first asserting that <code><a href="../Classes/StateViewController.html#/s:19StateViewControllerAAC013hasDeterminedA0Sbvp">hasDeterminedState</a></code> is <code>true</code>.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">loadAppearanceState</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">State</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A state</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L279-L281">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC08setNeedsA10Transitionyx2to_Sb8animatedtF"></a>
+                    <a name="//apple_ref/swift/Method/setNeedsStateTransition(to:animated:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC08setNeedsA10Transitionyx2to_Sb8animatedtF">setNeedsStateTransition(to:animated:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the state view controller that a new state is needed.
+As soon as the state view controller is ready to change state, a state transition will begin.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Multiple calls to this method will result in the last state provided being transitioned to.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setNeedsStateTransition</span><span class="p">(</span><span class="n">to</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>state</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>State to transition to.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether to animate the state transition.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L291-L309">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Content%20view%20controllers"></a>
+                <a name="//apple_ref/swift/Section/Content view controllers" class="dashAnchor"></a>
+                <a href="#/Content%20view%20controllers">
+                  <h3 class="section-name">Content view controllers</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC07contentB11ControllersSaySo06UIViewC0CGx3for_tF"></a>
+                    <a name="//apple_ref/swift/Method/contentViewControllers(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC07contentB11ControllersSaySo06UIViewC0CGx3for_tF">contentViewControllers(for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns an array of content view controllers representing a state.
+The order of the view controllers matter – first in array will be placed first in the container views
+view hierarchy.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">contentViewControllers</span><span class="p">(</span><span class="k">for</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">UIViewController</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>state</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>State being represented</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An array of view controllers</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L319-L321">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC07contentbc9ContainerB0So6UIViewCvp"></a>
+                    <a name="//apple_ref/swift/Property/contentViewControllerContainerView" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC07contentbc9ContainerB0So6UIViewCvp">contentViewControllerContainerView</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Container view placed directly in the <code>StateViewController</code>s view.
+Content view controllers are placed inside this view, edge to edge.</p>
+<div class="aside aside-important">
+    <p class="aside-title">Important</p>
+    You should not directly manipulate the view hierarchy of this view
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">contentViewControllerContainerView</span><span class="p">:</span> <span class="kt">UIView</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L329-L338">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC011loadContentbc9ContainerB0So6UIViewCyF"></a>
+                    <a name="//apple_ref/swift/Method/loadContentViewControllerContainerView()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC011loadContentbc9ContainerB0So6UIViewCyF">loadContentViewControllerContainerView()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This method is only called once.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">loadContentViewControllerContainerView</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">UIView</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A <code>UIView</code> if not overridden.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L345-L347">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Callbacks"></a>
+                <a name="//apple_ref/swift/Section/Callbacks" class="dashAnchor"></a>
+                <a href="#/Callbacks">
+                  <h3 class="section-name">Callbacks</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC14willTransitionyx2to_Sb8animatedtF"></a>
+                    <a name="//apple_ref/swift/Method/willTransition(to:animated:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC14willTransitionyx2to_Sb8animatedtF">willTransition(to:animated:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the view controller that a state transition is to be performed.</p>
+
+<p>Use this method to prepare view controller representing the given state for display.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">willTransition</span><span class="p">(</span><span class="n">to</span> <span class="nv">nextState</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>nextState</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>State that will be transitioned to.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Indicates whether the outstanding transition will be animated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L358-L360">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC13didTransitionyxSg4from_Sb8animatedtF"></a>
+                    <a name="//apple_ref/swift/Method/didTransition(from:animated:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC13didTransitionyxSg4from_Sb8animatedtF">didTransition(from:animated:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the view controller that it has finished transitioning to a new state.</p>
+
+<p>As this method guarantees that a state transition has fully completed, this function is a good place
+to call <code>setNeedsTransition(to:animated:)</code>, or methods that eventually (asynchronously or synchronously) calls
+that method.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">didTransition</span><span class="p">(</span><span class="n">from</span> <span class="nv">previousState</span><span class="p">:</span> <span class="kt">State</span><span class="p">?,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>state</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>State</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If true, the state transition was animated</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L371-L373">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC07contentbC10WillAppearySo06UIViewC0C_Sb8animatedtF"></a>
+                    <a name="//apple_ref/swift/Method/contentViewControllerWillAppear(_:animated:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC07contentbC10WillAppearySo06UIViewC0C_Sb8animatedtF">contentViewControllerWillAppear(_:animated:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the view controller that a content view controller will appear.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">contentViewControllerWillAppear</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>View controller appearing.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Indicates whether the appearance is animated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L380-L382">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC07contentbC9DidAppearySo06UIViewC0C_Sb8animatedtF"></a>
+                    <a name="//apple_ref/swift/Method/contentViewControllerDidAppear(_:animated:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC07contentbC9DidAppearySo06UIViewC0C_Sb8animatedtF">contentViewControllerDidAppear(_:animated:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the view controller that a content view controller did appear.</p>
+
+<p>This method is well suited as a function to add targets and listeners that should only be present when
+the provided content view controller is on screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">contentViewControllerDidAppear</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>View controller appeared.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Indicates whether the apperance was animated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L392-L394">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC07contentbC13WillDisappearySo06UIViewC0C_Sb8animatedtF"></a>
+                    <a name="//apple_ref/swift/Method/contentViewControllerWillDisappear(_:animated:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC07contentbC13WillDisappearySo06UIViewC0C_Sb8animatedtF">contentViewControllerWillDisappear(_:animated:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the view controller that a content view controller will disappear.
+This method is well suited as a fucntion to remove targets and listerners that should only be present
+when the content view controller is on screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">contentViewControllerWillDisappear</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>View controller disappearing.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Indicates whether the disappearance is animated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L403-L405">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC07contentbC12DidDisappearySo06UIViewC0C_Sb8animatedtF"></a>
+                    <a name="//apple_ref/swift/Method/contentViewControllerDidDisappear(_:animated:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC07contentbC12DidDisappearySo06UIViewC0C_Sb8animatedtF">contentViewControllerDidDisappear(_:animated:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notifies the view controller that a content view controller did disappear.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">contentViewControllerDidDisappear</span><span class="p">(</span><span class="n">_</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>viewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Content view controller disappearad.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Indicates whether the disappearance was animated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L412-L414">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Animation"></a>
+                <a name="//apple_ref/swift/Section/Animation" class="dashAnchor"></a>
+                <a href="#/Animation">
+                  <h3 class="section-name">Animation</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19StateViewControllerAAC26stateTransitionCoordinatorAA0abceF0_pSgSo06UIViewC0C3for_tF"></a>
+                    <a name="//apple_ref/swift/Method/stateTransitionCoordinator(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19StateViewControllerAAC26stateTransitionCoordinatorAA0abceF0_pSgSo06UIViewC0C3for_tF">stateTransitionCoordinator(for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns an optional <code><a href="../Protocols/StateViewControllerTransitionCoordinator.html">StateViewControllerTransitionCoordinator</a></code>, used to animate transitions between
+states.</p>
+
+<p>If the provided view controller conforms to <code>StateViewControllerTransitioning´, and this method returns
+non-nil, the returned</code>StateViewControllerTransitionCoordinator` is used to animate the state transition
+of the provided view controller.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">stateTransitionCoordinator</span><span class="p">(</span>
+    <span class="k">for</span> <span class="nv">contentViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/StateViewControllerTransitionCoordinator.html">StateViewControllerTransitionCoordinator</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contentViewController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Content view controller.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A <code><a href="../Protocols/StateViewControllerTransitionCoordinator.html">StateViewControllerTransitionCoordinator</a></code>, or <code>nil</code>.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/formbound/StateViewController/tree/master/Sources/StateViewController.swift#L427-L430">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">David Ask, Formbound AB</a>. All rights reserved. (Last updated: 2018-08-16)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

@@ -1,0 +1,8 @@
+output: docs
+clean: true
+exclude: [Packages, Carthage]
+author: David Ask, Formbound AB
+github_url: https://github.com/formbound/StateViewController
+github_file_prefix: https://github.com/formbound/StateViewController/tree/master
+readme: README.md
+theme: fullwidth

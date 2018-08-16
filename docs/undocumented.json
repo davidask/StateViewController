@@ -1,0 +1,12 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/davidask/Formbound/Projects/StateViewController/Sources/StateViewController.swift",
+      "line": 268,
+      "symbol": "StateViewController.hasDeterminedState",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/davidask/Formbound/Projects/StateViewController"
+}
