@@ -8,7 +8,7 @@ public extension Notification.Name {
 /// The default `StateViewControllerTransitionCoordinator` used, if `stateTransitionCoordinator(for:)` returns nil
 /// or if a view content view controller of `StateViewController` does not conform to
 /// `StateViewControllerTransitioning`.
-public var defaultStateTransitioningCoordinator: StateViewControllerTransitionCoordinator?
+public var defaultStateTransitionCoordinator: StateViewControllerTransitionCoordinator?
 
 /// A container view controller that manages the appearance of one or more child view controller for any given state.
 ///
@@ -418,7 +418,7 @@ open class StateViewController<State: Equatable>: UIViewController {
     /// Returns an optional `StateViewControllerTransitionCoordinator`, used to animate transitions between
     /// states.
     ///
-    /// If the provided view controller conforms to `StateViewControllerTransitioning´, and this method returns
+    /// If the provided view controller conforms to `StateViewControllerTransitioning`, and this method returns
     /// non-nil, the returned `StateViewControllerTransitionCoordinator` is used to animate the state transition
     /// of the provided view controller.
     ///
@@ -614,7 +614,7 @@ fileprivate extension StateViewController {
         } else if let cast = cast {
             cast.stateTransitionWillBegin(isAppearing: isAppearing)
         } else {
-            defaultStateTransitioningCoordinator?.stateTransitionWillBegin(
+            defaultStateTransitionCoordinator?.stateTransitionWillBegin(
                 viewController: viewController,
                 isAppearing: isAppearing
             )
@@ -628,7 +628,7 @@ fileprivate extension StateViewController {
             } else if let cast = cast {
                 cast.animateAlongsideStateTransition(isAppearing: isAppearing)
             } else {
-                defaultStateTransitioningCoordinator?.animateAlongsideStateTransition(
+                defaultStateTransitionCoordinator?.animateAlongsideStateTransition(
                     of: viewController,
                     isAppearing: isAppearing
                 )
@@ -642,7 +642,7 @@ fileprivate extension StateViewController {
         } else {
             duration = cast?.stateTransitionDuration(
                 isAppearing: isAppearing
-            ) ?? defaultStateTransitioningCoordinator?.stateTransitionDuration(
+            ) ?? defaultStateTransitionCoordinator?.stateTransitionDuration(
                 for: viewController,
                 isAppearing: isAppearing
             ) ?? 0
@@ -655,7 +655,7 @@ fileprivate extension StateViewController {
         } else {
             delay = cast?.stateTransitionDelay(
                 isAppearing: isAppearing
-            ) ?? defaultStateTransitioningCoordinator?.stateTransitionDelay(
+            ) ?? defaultStateTransitionCoordinator?.stateTransitionDelay(
                 for: viewController,
                 isAppearing: isAppearing
             ) ?? 0
@@ -675,7 +675,7 @@ fileprivate extension StateViewController {
                 } else if let cast = cast {
                     cast.stateTransitionDidEnd(isAppearing: isAppearing)
                 } else {
-                    defaultStateTransitioningCoordinator?.stateTransitionDidEnd(
+                    defaultStateTransitionCoordinator?.stateTransitionDidEnd(
                         viewController: viewController,
                         isAppearing: isAppearing
                     )
@@ -697,14 +697,6 @@ fileprivate extension StateViewController {
                     completion()
             }
         }
-    }
-
-    private func animateStateTransition(
-        for viewController: UIViewController,
-        isAppearing: Bool,
-        coordinator: StateViewControllerTransitionCoordinator?,
-        completion: () -> Void) {
-
     }
 }
 

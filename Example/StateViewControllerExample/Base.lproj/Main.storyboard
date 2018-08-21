@@ -78,19 +78,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="syB-XM-5Fz">
-                                <rect key="frame" x="169" y="315" width="37" height="37"/>
-                            </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RDM-Bn-wL7">
+                                <rect key="frame" x="149" y="304.5" width="77" height="77"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="syB-XM-5Fz">
+                                        <rect key="frame" x="29" y="29" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="syB-XM-5Fz" firstAttribute="centerX" secondItem="RDM-Bn-wL7" secondAttribute="centerX" id="71Y-ja-vcg"/>
+                                    <constraint firstAttribute="width" constant="77" id="GIb-4G-DXt"/>
+                                    <constraint firstAttribute="height" constant="77" id="Zfv-E0-qjg"/>
+                                    <constraint firstItem="syB-XM-5Fz" firstAttribute="centerY" secondItem="RDM-Bn-wL7" secondAttribute="centerY" id="zM6-bQ-noC"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.09892837703" green="0.130219996" blue="0.16634854669999999" alpha="0.77081549657534243" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="syB-XM-5Fz" firstAttribute="centerY" secondItem="iWw-Nq-NbT" secondAttribute="centerY" id="eHp-l1-wbl"/>
-                            <constraint firstItem="syB-XM-5Fz" firstAttribute="centerX" secondItem="iWw-Nq-NbT" secondAttribute="centerX" id="kGl-u0-i2i"/>
+                            <constraint firstItem="RDM-Bn-wL7" firstAttribute="centerX" secondItem="1yS-p3-bkJ" secondAttribute="centerX" id="rQj-Q0-e9Y"/>
+                            <constraint firstItem="syB-XM-5Fz" firstAttribute="centerY" secondItem="1yS-p3-bkJ" secondAttribute="centerY" id="u0J-YH-iTo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1yS-p3-bkJ"/>
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="syB-XM-5Fz" id="DJn-L0-T2R"/>
+                        <outlet property="activityIndicatorBackground" destination="RDM-Bn-wL7" id="BbT-75-VlB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8wb-4Y-cBo" userLabel="First Responder" sceneMemberID="firstResponder"/>

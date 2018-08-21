@@ -61,7 +61,7 @@
             <a class="nav-group-name-link" href="Global Variables.html">Global Variables</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Global Variables.html#/s:19StateViewController07defaultA24TransitioningCoordinatorAA0abc10TransitionF0_pSgvp">defaultStateTransitioningCoordinator</a>
+                <a class="nav-group-task-link" href="Global Variables.html#/s:19StateViewController07defaultA21TransitionCoordinatorAA0abceF0_pSgvp">defaultStateTransitionCoordinator</a>
               </li>
             </ul>
           </li>
@@ -99,7 +99,14 @@
 <p>When creating rich stateful view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often inferred from multiple properties that need to be synchronized to correctly represent a single state. Usually the end result is known as the <em>Massive View Controller</em> problem, often solved by deviating from the <a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html">MVC</a> pattern used and endorsed heavily by Apple. While other patterns, such as <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">MVVM</a> or <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter">MVP</a>, can solve your issues, going with the grain rather than against makes interacting with UIKit a whole lot easier. <em>This repository houses one dependency-free class, called <code><a href="Classes/StateViewController.html">StateViewController</a></code>, which is tasked with solving this issue.</em></p>
 <h2 id='overview' class='heading'>Overview</h2>
 
-<p>StateViewController is a container view controller that presents one or more view controllers for any given state that you define, such as <code>loading</code>, <code>list</code>, or <code>editing</code>. It manages the appearance cycles of each content view controller, making sure that the view lifecycle of the content view controllers are intact and in order, notifying you about state transitions and which content view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.</p>
+<p><code><a href="Classes/StateViewController.html">StateViewController</a></code> is a container view controller that presents one or more view controllers for any given state that you define, such as <code>loading</code>, <code>list</code>, or <code>editing</code>. It manages the appearance cycles of each content view controller, making sure that the view lifecycle of the content view controllers are intact and in order, notifying you about state transitions and which content view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.</p>
+<h2 id='typical-usecase' class='heading'>Typical usecase</h2>
+
+<p>The state view controller helps you manage child view controllers representing different states. In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.</p>
+
+<p>
+    <img src="./Images/example_gif.gif" width="300" />
+</p>
 <h2 id='documentation' class='heading'>Documentation</h2>
 
 <p>The source code documentation can be found <a href="https://formbound.github.io/StateViewController/">here</a>.</p>
@@ -109,6 +116,8 @@
 <pre class="highlight plaintext"><code>github "formbound/StateViewController"
 </code></pre>
 <h2 id='usage' class='heading'>Usage</h2>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">StateViewController</span>
+</code></pre>
 
 <p>To use <code><a href="Classes/StateViewController.html">StateViewController</a></code> you must override it. The class is generic with a subtype of <code>State</code> which must conform to <code>Equatable</code>. The state type can be designed to house the actual model data required by your view controller, but that&rsquo;s an optional design decision. For instance, you can create a state that simply determines an abstract state:</p>
 <pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">MyState</span><span class="p">:</span> <span class="kt">Equatable</span> <span class="p">{</span>
@@ -190,7 +199,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">David Ask, Formbound AB</a>. All rights reserved. (Last updated: 2018-08-16)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">David Ask, Formbound AB</a>. All rights reserved. (Last updated: 2018-08-21)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

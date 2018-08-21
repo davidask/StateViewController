@@ -4,8 +4,15 @@
 When creating rich stateful view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often inferred from multiple properties that need to be synchronized to correctly represent a single state. Usually the end result is known as the *Massive View Controller* problem, often solved by deviating from the [MVC](https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html) pattern used and endorsed heavily by Apple. While other patterns, such as [MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel) or [MVP](https://en.wikipedia.org/wiki/Model–view–presenter), can solve your issues, going with the grain rather than against makes interacting with UIKit a whole lot easier. *This repository houses one dependency-free class, called `StateViewController`, which is tasked with solving this issue.*
 
 ## Overview
-StateViewController is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each content view controller, making sure that the view lifecycle of the content view controllers are intact and in order, notifying you about state transitions and which content view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
+`StateViewController` is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each content view controller, making sure that the view lifecycle of the content view controllers are intact and in order, notifying you about state transitions and which content view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
 
+## Typical usecase
+The state view controller helps you manage child view controllers representing different states. In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.
+
+
+<p>
+    <img src="./Images/example_gif.gif" width="300" />
+</p>
 
 ## Documentation
 
