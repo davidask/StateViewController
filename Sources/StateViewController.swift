@@ -249,6 +249,26 @@ open class StateViewController<State: Equatable>: UIViewController {
         endStateTransitionIfNeeded(animated: animated)
     }
 
+    // MARK: - Container view controller forwarding
+
+    open override var childViewControllerForStatusBarStyle: UIViewController? {
+        return childViewControllers.last
+    }
+
+    open override var childViewControllerForStatusBarHidden: UIViewController? {
+        return childViewControllers.last
+    }
+
+    @available(iOS 11, *)
+    open override func childViewControllerForScreenEdgesDeferringSystemGestures() -> UIViewController? {
+        return childViewControllers.last
+    }
+
+    @available(iOS 11, *)
+    open override func childViewControllerForHomeIndicatorAutoHidden() -> UIViewController? {
+        return childViewControllers.last
+    }
+
     // MARK: - State transitioning
 
     /// Indicates whether the view controller currently is transitioning between states.
@@ -528,6 +548,15 @@ fileprivate extension StateViewController {
         // Prepare for adding view controllers
         for viewController in adding {
             addContentViewController(viewController, animated: animated)
+        }
+
+        if adding.isEmpty == false || removing.isEmpty == false {
+            setNeedsStatusBarAppearanceUpdate()
+
+            if #available(iOS 11, *) {
+                setNeedsUpdateOfHomeIndicatorAutoHidden()
+                setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+            }
         }
 
         // Update the hierarchy of the view controllers that will represent the state being transitioned to.
