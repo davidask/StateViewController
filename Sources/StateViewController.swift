@@ -106,8 +106,6 @@ public var defaultStateTransitionCoordinator: StateViewControllerTransitionCoord
 /// - Set `defaultStateTransitioningCoordinator`
 /// - Override `stateTransitionCoordinator(for:)` in your `StateViewController` subclasses
 /// - Conform view controllers contained in `StateViewController` to `StateViewControllerTransitioning`.
-///
-///
 open class StateViewController<State: Equatable>: UIViewController {
 
     /// Current state storage
@@ -153,7 +151,8 @@ open class StateViewController<State: Equatable>: UIViewController {
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Note that we're in an appearance transition
+        // When `viewWillAppear(animated:)` is called we do not yet connsider ourselves in an appearance transition
+        // internally because first we have to assert whether we are changing to an appearannce state.
         isApplyingAppearanceState = false
         isInAppearanceTransition = false
 
@@ -171,17 +170,16 @@ open class StateViewController<State: Equatable>: UIViewController {
         }
 
         // Prematurely remove view controllers that are being removed.
-        // They do not need to be visible what so ever.
         // As we're not yet setting the `isInAppearanceTransition` to `true`, the appearance methods
         // for each child view controller below will be forwarded correctly.
         for child in viewControllersBeingRemoved {
             removeContentViewController(child, animated: false)
         }
 
-        // Note that we're not in an appearance transition
+        // Note that we're in an appearance transition
         isInAppearanceTransition = true
 
-        // Forward begin appearance transitions to child view controllers
+        // Forward begin appearance transitions to child view controllers.
         forwardBeginApperanceTransition(isAppearing: true, animated: animated)
     }
 
@@ -203,7 +201,7 @@ open class StateViewController<State: Equatable>: UIViewController {
             }
         }
 
-        // End state transition if needed. Child view controllers may still be in a transition,
+        // End state transition if needed. Child view controllers may still be in a transition.
         endStateTransitionIfNeeded(animated: animated)
     }
 
