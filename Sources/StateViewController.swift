@@ -731,6 +731,8 @@ fileprivate extension StateViewController {
 
     func updateHierarchy(of viewControllers: [UIViewController]) {
 
+        let previousSubviews = contentViewControllerContainerView.subviews
+
         for (index, viewController) in viewControllers.enumerated() {
             viewController.view.translatesAutoresizingMaskIntoConstraints = true
             viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -738,6 +740,12 @@ fileprivate extension StateViewController {
             viewController.view.center = contentViewControllerContainerView.center
 
             contentViewControllerContainerView.insertSubview(viewController.view, at: index)
+        }
+
+        // Only proceed if the previous subviews of the content view controller container view
+        // differ from the new subviews
+        guard previousSubviews.elementsEqual(contentViewControllerContainerView.subviews) == false else {
+            return
         }
 
         // Tell everyone we're updating the view hierarchy
