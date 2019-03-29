@@ -1,14 +1,6 @@
 
-public protocol AnyStateViewControllerObserver : AnyObject, Equatable {
+public protocol AnyStateViewControllerObserver : AnyObject {
     func remove()
-}
-
-public extension AnyStateViewControllerObserver {
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs === rhs
-    }
-
 }
 
 public class StateViewControllerObserver<T: Equatable>: AnyStateViewControllerObserver {
@@ -43,6 +35,13 @@ public class StateViewControllerObserver<T: Equatable>: AnyStateViewControllerOb
 
     internal func invoke(with event: Event) {
         eventHandler(event)
+    }
+}
+
+extension StateViewControllerObserver: Equatable {
+
+    public static func == (lhs: StateViewControllerObserver, rhs: StateViewControllerObserver) -> Bool {
+        return lhs === rhs
     }
 }
 
