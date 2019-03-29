@@ -136,6 +136,8 @@ open class StateViewController<State: Equatable>: UIViewController {
         return false // We completely manage forwarding of appearance methods ourselves.
     }
 
+    fileprivate var observers: [StateViewControllerObserver<State>] = []
+
     // MARK: - View lifecycle
 
     /// :nodoc:
@@ -513,6 +515,7 @@ fileprivate extension StateViewController {
 
         // Invoke callback method, indicating that we will change state
         willTransition(to: state, animated: animated)
+        dispatchStateEvent(.willTransitionTo(state))
 
         // We may not have made any changes to content view controllers, even though we have changed the state.
         // Therefore, we must be prepare to end the state transition immediately.
@@ -608,6 +611,7 @@ fileprivate extension StateViewController {
         transitioningFromState = nil
 
         // Notify that we're finished transitioning
+        dispatchStateEvent(.didTransitionFrom(fromState))
         didTransition(from: fromState, animated: animated)
 
         // If we still need another state, let's transition to it immediately.
@@ -748,6 +752,8 @@ fileprivate extension StateViewController {
             return
         }
 
+        dispatchStateEvent(.didChangeHierarhcy)
+
         // Tell everyone we're updating the view hierarchy
         NotificationCenter.default.post(name: .stateViewControllerDidChangeViewHierarchy, object: self)
 
@@ -855,4 +861,33 @@ fileprivate extension StateViewController {
         viewController.removeFromParentViewController()
         viewControllersBeingRemoved.remove(viewController)
     }
+}
+
+
+public extension StateViewController {
+
+
+    func addStateObserver(
+        _ eventHandler: @escaping StateViewControllerObserver<State>.EventHandler
+    ) -> StateViewControllerObserver<State> {
+
+        let observer = StateViewControllerObserver(stateViewController: self, eventHandler: eventHandler)
+
+        observers.append(observer)
+
+        return observer
+    }
+
+    func removeStateObserver(_ observerToRemove: StateViewControllerObserver<State>) {
+        observers = observers.filter { observer in
+            observer != observerToRemove
+        }
+    }
+
+    fileprivate func dispatchStateEvent(_ event: StateViewControllerObserver<State>.Event) {
+        for observer in observers {
+            observer.invoke(with: event)
+        }
+    }
+
 }
