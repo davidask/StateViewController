@@ -18,7 +18,14 @@ public class StateViewControllerObserver<T: Equatable>: AnyStateViewControllerOb
     public enum Event {
         case willTransitionTo(T)
         case didTransitionFrom(T?)
+
         case didChangeHierarhcy
+
+        case contentWillAppear(UIViewController)
+        case contentDidAppear(UIViewController)
+
+        case contentWillDisappear(UIViewController)
+        case contentDidDisappear(UIViewController)
     }
 
     private weak var stateViewController: StateViewController<T>?

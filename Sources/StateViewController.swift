@@ -801,6 +801,7 @@ fileprivate extension StateViewController {
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
             contentViewControllerWillAppear(viewController, animated: animated)
+            dispatchStateEvent(.contentWillAppear(viewController))
             viewController.beginAppearanceTransition(true, animated: animated)
         }
 
@@ -816,6 +817,7 @@ fileprivate extension StateViewController {
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
+            dispatchStateEvent(.contentDidAppear(viewController))
             viewController.endAppearanceTransition()
             contentViewControllerDidAppear(viewController, animated: animated)
         }
@@ -836,6 +838,7 @@ fileprivate extension StateViewController {
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
             contentViewControllerWillDisappear(viewController, animated: animated)
+            dispatchStateEvent(.contentWillDisappear(viewController))
             viewController.beginAppearanceTransition(false, animated: animated)
         }
 
@@ -854,6 +857,7 @@ fileprivate extension StateViewController {
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
+            dispatchStateEvent(.contentDidDisappear(viewController))
             viewController.endAppearanceTransition()
             contentViewControllerDidDisappear(viewController, animated: animated)
         }
