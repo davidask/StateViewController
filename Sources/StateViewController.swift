@@ -515,7 +515,7 @@ fileprivate extension StateViewController {
 
         // Invoke callback method, indicating that we will change state
         willTransition(to: state, animated: animated)
-        dispatchStateEvent(.willTransitionTo(state))
+        dispatchStateEvent(.willTransitionTo(nextState: state, animated: animated))
 
         // We may not have made any changes to content view controllers, even though we have changed the state.
         // Therefore, we must be prepare to end the state transition immediately.
@@ -611,7 +611,7 @@ fileprivate extension StateViewController {
         transitioningFromState = nil
 
         // Notify that we're finished transitioning
-        dispatchStateEvent(.didTransitionFrom(fromState))
+        dispatchStateEvent(.didTransitionFrom(previousState: fromState, animated: animated))
         didTransition(from: fromState, animated: animated)
 
         // If we still need another state, let's transition to it immediately.

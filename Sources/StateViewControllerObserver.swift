@@ -8,8 +8,8 @@ public class StateViewControllerObserver<T: Equatable>: AnyStateViewControllerOb
     public typealias EventHandler = (StateViewControllerObserver<T>.Event) -> Void
 
     public enum Event {
-        case willTransitionTo(T)
-        case didTransitionFrom(T?)
+        case willTransitionTo(nextState: T, animated: Bool)
+        case didTransitionFrom(previousState: T?, animated: Bool)
 
         case didChangeHierarhcy
 
