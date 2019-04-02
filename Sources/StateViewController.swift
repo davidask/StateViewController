@@ -506,6 +506,12 @@ fileprivate extension StateViewController {
             return false
         }
 
+        // We may not have made any changes to content view controllers, even though we have changed the state.
+        // Therefore, we must be prepare to end the state transition immediately.
+        defer {
+            endStateTransitionIfNeeded(animated: animated)
+        }
+
         // If we're transitioning between states, we need to abort and wait for the current state
         // transition to finish.
         guard isTransitioningBetweenStates == false else {
@@ -517,11 +523,6 @@ fileprivate extension StateViewController {
         willTransition(to: state, animated: animated)
         dispatchStateEvent(.willTransitionTo(nextState: state, animated: animated))
 
-        // We may not have made any changes to content view controllers, even though we have changed the state.
-        // Therefore, we must be prepare to end the state transition immediately.
-        defer {
-            endStateTransitionIfNeeded(animated: animated)
-        }
 
         // Note that we're transitioning from a state
         transitioningFromState = state
