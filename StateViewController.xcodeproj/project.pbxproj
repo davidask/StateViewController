@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6325167D224E221A00235B46 /* StateViewControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6325167C224E221A00235B46 /* StateViewControllerObserver.swift */; };
 		B76AA3C6212052FA00020277 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C4212052FA00020277 /* StateViewController.swift */; };
 		B76AA3C7212052FA00020277 /* StateViewControllerTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */; };
 		B76AA3CB2120531600020277 /* StateViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B76AA3C92120531600020277 /* StateViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6325167C224E221A00235B46 /* StateViewControllerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateViewControllerObserver.swift; sourceTree = "<group>"; };
 		B76AA3B7212052B500020277 /* StateViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76AA3C4212052FA00020277 /* StateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewController.swift; sourceTree = "<group>"; };
 		B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewControllerTransitionCoordinator.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				B76AA3C4212052FA00020277 /* StateViewController.swift */,
+				6325167C224E221A00235B46 /* StateViewControllerObserver.swift */,
 				B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */,
 				B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */,
 			);
@@ -165,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6325167D224E221A00235B46 /* StateViewControllerObserver.swift in Sources */,
 				B76AA3C6212052FA00020277 /* StateViewController.swift in Sources */,
 				B76AA3C7212052FA00020277 /* StateViewControllerTransitionCoordinator.swift in Sources */,
 				B76AA3DA212053D800020277 /* StateViewControllerTransitioning.swift in Sources */,

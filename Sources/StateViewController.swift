@@ -136,6 +136,8 @@ open class StateViewController<State: Equatable>: UIViewController {
         return false // We completely manage forwarding of appearance methods ourselves.
     }
 
+    fileprivate var observers: [StateViewControllerObserver<State>] = []
+
     // MARK: - View lifecycle
 
     /// :nodoc:
@@ -504,6 +506,12 @@ fileprivate extension StateViewController {
             return false
         }
 
+        // We may not have made any changes to content view controllers, even though we have changed the state.
+        // Therefore, we must be prepare to end the state transition immediately.
+        defer {
+            endStateTransitionIfNeeded(animated: animated)
+        }
+
         // If we're transitioning between states, we need to abort and wait for the current state
         // transition to finish.
         guard isTransitioningBetweenStates == false else {
@@ -513,12 +521,8 @@ fileprivate extension StateViewController {
 
         // Invoke callback method, indicating that we will change state
         willTransition(to: state, animated: animated)
+        dispatchStateEvent(.willTransitionTo(nextState: state, animated: animated))
 
-        // We may not have made any changes to content view controllers, even though we have changed the state.
-        // Therefore, we must be prepare to end the state transition immediately.
-        defer {
-            endStateTransitionIfNeeded(animated: animated)
-        }
 
         // Note that we're transitioning from a state
         transitioningFromState = state
@@ -608,6 +612,7 @@ fileprivate extension StateViewController {
         transitioningFromState = nil
 
         // Notify that we're finished transitioning
+        dispatchStateEvent(.didTransitionFrom(previousState: fromState, animated: animated))
         didTransition(from: fromState, animated: animated)
 
         // If we still need another state, let's transition to it immediately.
@@ -731,6 +736,8 @@ fileprivate extension StateViewController {
 
     func updateHierarchy(of viewControllers: [UIViewController]) {
 
+        let previousSubviews = contentViewControllerContainerView.subviews
+
         for (index, viewController) in viewControllers.enumerated() {
             viewController.view.translatesAutoresizingMaskIntoConstraints = true
             viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -739,6 +746,14 @@ fileprivate extension StateViewController {
 
             contentViewControllerContainerView.insertSubview(viewController.view, at: index)
         }
+
+        // Only proceed if the previous subviews of the content view controller container view
+        // differ from the new subviews
+        guard previousSubviews.elementsEqual(contentViewControllerContainerView.subviews) == false else {
+            return
+        }
+
+        dispatchStateEvent(.didChangeHierarhcy)
 
         // Tell everyone we're updating the view hierarchy
         NotificationCenter.default.post(name: .stateViewControllerDidChangeViewHierarchy, object: self)
@@ -787,6 +802,7 @@ fileprivate extension StateViewController {
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
             contentViewControllerWillAppear(viewController, animated: animated)
+            dispatchStateEvent(.contentWillAppear(viewController))
             viewController.beginAppearanceTransition(true, animated: animated)
         }
 
@@ -802,6 +818,7 @@ fileprivate extension StateViewController {
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
+            dispatchStateEvent(.contentDidAppear(viewController))
             viewController.endAppearanceTransition()
             contentViewControllerDidAppear(viewController, animated: animated)
         }
@@ -822,6 +839,7 @@ fileprivate extension StateViewController {
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
             contentViewControllerWillDisappear(viewController, animated: animated)
+            dispatchStateEvent(.contentWillDisappear(viewController))
             viewController.beginAppearanceTransition(false, animated: animated)
         }
 
@@ -840,6 +858,7 @@ fileprivate extension StateViewController {
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
+            dispatchStateEvent(.contentDidDisappear(viewController))
             viewController.endAppearanceTransition()
             contentViewControllerDidDisappear(viewController, animated: animated)
         }
@@ -847,4 +866,33 @@ fileprivate extension StateViewController {
         viewController.removeFromParentViewController()
         viewControllersBeingRemoved.remove(viewController)
     }
+}
+
+
+public extension StateViewController {
+
+
+    func addStateObserver(
+        _ eventHandler: @escaping StateViewControllerObserver<State>.EventHandler
+    ) -> StateViewControllerObserver<State> {
+
+        let observer = StateViewControllerObserver(stateViewController: self, eventHandler: eventHandler)
+
+        observers.append(observer)
+
+        return observer
+    }
+
+    func removeStateObserver(_ observerToRemove: StateViewControllerObserver<State>) {
+        observers = observers.filter { observer in
+            observer != observerToRemove
+        }
+    }
+
+    fileprivate func dispatchStateEvent(_ event: StateViewControllerObserver<State>.Event) {
+        for observer in observers {
+            observer.invoke(with: event)
+        }
+    }
+
 }
