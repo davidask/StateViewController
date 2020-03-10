@@ -771,7 +771,6 @@ fileprivate extension StateViewController {
         // iOS 10 or below.
         triggerAutomaticAdjustmentOfScrollViewInsetsIfNeeded()
     }
-    
     /// Prompts the encloding `UINavigationController` and `UITabBarController` to layout their subviews,
     /// triggering them to adjust the scrollview insets
     func triggerAutomaticAdjustmentOfScrollViewInsetsIfNeeded() {
