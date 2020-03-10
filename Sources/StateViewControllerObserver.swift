@@ -1,5 +1,4 @@
-
-public protocol AnyStateViewControllerObserver : AnyObject {
+public protocol AnyStateViewControllerObserver: AnyObject {
     func remove()
 }
 
@@ -44,6 +43,3 @@ extension StateViewControllerObserver: Equatable {
         return lhs === rhs
     }
 }
-
-
-

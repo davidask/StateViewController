@@ -1,0 +1,22 @@
+name: Build
+on:
+  - push
+  - pull_request
+
+jobs:
+  iOS:
+    name: Build iOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and test
+        run: .github/xcodebuild StateViewController.xcodeproj "StateViewController iOS" build
+  tvOS:
+    name: Build tvOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build and test
+        run: .github/xcodebuild StateViewController.xcodeproj "StateViewController iOS" build

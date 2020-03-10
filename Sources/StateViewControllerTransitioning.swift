@@ -2,7 +2,7 @@ import UIKit
 
 /// View controllers can conform to this protocol to provide their desired
 /// state transitioning behaviour when contained in a `StateViewController`.
-public protocol StateViewControllerTransitioning: class {
+public protocol StateViewControllerTransitioning: AnyObject {
 
     /// Returns the animation duration for a state transition of this view controller.
     ///

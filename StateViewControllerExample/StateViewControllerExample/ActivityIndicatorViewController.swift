@@ -13,7 +13,6 @@ class ActivityIndicatorViewController: UIViewController {
 
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 

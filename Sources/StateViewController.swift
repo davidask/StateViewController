@@ -164,7 +164,7 @@ open class StateViewController<State: Equatable>: UIViewController {
         // If the required appearance state does not match the current state, begin applying appearance state.
         if stateInternal != appearanceState {
             // Note that we're applying the appearance state for this appearance cycle.
-            if isMovingToParentViewController {
+            if isMovingToParent {
                 setNeedsStateTransition(to: appearanceState, animated: animated)
             } else {
                 isApplyingAppearanceState = beginStateTransition(to: appearanceState, animated: animated)
@@ -251,23 +251,25 @@ open class StateViewController<State: Equatable>: UIViewController {
 
     // MARK: - Container view controller forwarding
 
-    open override var childViewControllerForStatusBarStyle: UIViewController? {
-        return childViewControllers.last
+    #if os(iOS)
+    open override var childForStatusBarStyle: UIViewController? {
+        children.last
     }
 
-    open override var childViewControllerForStatusBarHidden: UIViewController? {
-        return childViewControllers.last
-    }
-
-    @available(iOS 11, *)
-    open override func childViewControllerForScreenEdgesDeferringSystemGestures() -> UIViewController? {
-        return childViewControllers.last
+    open override var childForStatusBarHidden: UIViewController? {
+        children.last
     }
 
     @available(iOS 11, *)
-    open override func childViewControllerForHomeIndicatorAutoHidden() -> UIViewController? {
-        return childViewControllers.last
+    open override var childForScreenEdgesDeferringSystemGestures: UIViewController? {
+        children.last
     }
+
+    @available(iOS 11, *)
+    open override var childForHomeIndicatorAutoHidden: UIViewController? {
+        children.last
+    }
+    #endif
 
     // MARK: - State transitioning
 
@@ -296,9 +298,15 @@ open class StateViewController<State: Equatable>: UIViewController {
     /// method without first asserting that `hasDeterminedState` is `true`.
     ///
     /// - Returns: A state
+    // swiftlint:disable unavailable_function
     open func loadAppearanceState() -> State {
-        fatalError("Not implemented")
+        fatalError(
+            "\(String(describing: self)) does not implement loadAppearanceState(), which is required. " +
+            "A StateViewController must immediately be able to resolve its state before entering an " +
+            "appearance transition."
+        )
     }
+    // swiftlint:enable unavailable_function
 
     /// Notifies the state view controller that a new state is needed.
     /// As soon as the state view controller is ready to change state, a state transition will begin.
@@ -464,7 +472,7 @@ fileprivate extension StateViewController {
         // Appearance method forwarding will be performed at a later stage
         let excluded = viewControllersBeingAdded.union(viewControllersBeingRemoved)
 
-        for viewController in childViewControllers where excluded.contains(viewController) == false {
+        for viewController in children where excluded.contains(viewController) == false {
 
             // Invoke the appropriate callback method
             if isAppearing {
@@ -483,7 +491,7 @@ fileprivate extension StateViewController {
         // Appearance method forwarding will be performed at a later stage.
         let excluded = viewControllersBeingAdded.union(viewControllersBeingRemoved)
 
-        for viewController in childViewControllers where excluded.contains(viewController) == false {
+        for viewController in children where excluded.contains(viewController) == false {
             viewController.endAppearanceTransition()
 
             // Invoke the appropriate callback method
@@ -523,7 +531,6 @@ fileprivate extension StateViewController {
         willTransition(to: state, animated: animated)
         dispatchStateEvent(.willTransitionTo(nextState: state, animated: animated))
 
-
         // Note that we're transitioning from a state
         transitioningFromState = state
 
@@ -531,7 +538,7 @@ fileprivate extension StateViewController {
         stateInternal = state
 
         // View controllers before the state transition
-        let previous = childViewControllers
+        let previous = children
 
         // View controllers after the state transition
         let next = contentViewControllers(for: state)
@@ -552,6 +559,7 @@ fileprivate extension StateViewController {
             addContentViewController(viewController, animated: animated)
         }
 
+        #if os(iOS)
         if adding.isEmpty == false || removing.isEmpty == false {
             setNeedsStatusBarAppearanceUpdate()
 
@@ -560,6 +568,7 @@ fileprivate extension StateViewController {
                 setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
             }
         }
+        #endif
 
         // Update the hierarchy of the view controllers that will represent the state being transitioned to.
         updateHierarchy(of: next)
@@ -694,7 +703,7 @@ fileprivate extension StateViewController {
         }
 
         // For iOS 10 and above, we use UIViewPropertyAnimator
-        if #available(iOS 10, *) {
+        if #available(iOS 10, tvOS 10, *) {
             let animator = UIViewPropertyAnimator(
                 duration: duration,
                 dampingRatio: 1,
@@ -796,7 +805,7 @@ fileprivate extension StateViewController {
             return
         }
 
-        addChildViewController(viewController)
+        addChild(viewController)
 
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
@@ -823,7 +832,7 @@ fileprivate extension StateViewController {
             contentViewControllerDidAppear(viewController, animated: animated)
         }
 
-        viewController.didMove(toParentViewController: self)
+        viewController.didMove(toParent: self)
         viewControllersBeingAdded.remove(viewController)
     }
 
@@ -833,7 +842,7 @@ fileprivate extension StateViewController {
             return
         }
 
-        viewController.willMove(toParentViewController: nil)
+        viewController.willMove(toParent: nil)
 
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
@@ -863,15 +872,12 @@ fileprivate extension StateViewController {
             contentViewControllerDidDisappear(viewController, animated: animated)
         }
 
-        viewController.removeFromParentViewController()
+        viewController.removeFromParent()
         viewControllersBeingRemoved.remove(viewController)
     }
 }
 
-
 public extension StateViewController {
-
-
     func addStateObserver(
         _ eventHandler: @escaping StateViewControllerObserver<State>.EventHandler
     ) -> StateViewControllerObserver<State> {
@@ -894,5 +900,4 @@ public extension StateViewController {
             observer.invoke(with: event)
         }
     }
-
 }

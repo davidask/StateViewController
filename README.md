@@ -3,6 +3,10 @@
 
 When creating rich stateful view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often inferred from multiple properties that need to be synchronized to correctly represent a single state. Usually the end result is known as the *Massive View Controller* problem, often solved by deviating from the [MVC](https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html) pattern used and endorsed heavily by Apple. While other patterns, such as [MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel) or [MVP](https://en.wikipedia.org/wiki/Model–view–presenter), can solve your issues, going with the grain rather than against makes interacting with UIKit a whole lot easier. *This repository houses one dependency-free class, called `StateViewController`, which is tasked with solving this issue.*
 
+### Supported Platforms
+
+* iOS 8.0 or later
+* tvOS 9.0 or later
 
 ## Overview
 `StateViewController` is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each content view controller, making sure that the view lifecycle of the content view controllers are intact and in order, notifying you about state transitions and which content view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
