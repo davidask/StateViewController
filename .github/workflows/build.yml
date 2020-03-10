@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build and test
-        run: .github/xcodebuild StateViewController.xcodeproj "StateViewController iOS" build
+        run: .github/xcodebuild StateViewController.xcodeproj "StateViewController iOS" build iPhone
   tvOS:
     name: Build tvOS
     runs-on: macos-latest
@@ -19,4 +19,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build and test
-        run: .github/xcodebuild StateViewController.xcodeproj "StateViewController iOS" build
+        run: .github/xcodebuild StateViewController.xcodeproj "StateViewController iOS" build "Apple TV"
