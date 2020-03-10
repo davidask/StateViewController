@@ -12,13 +12,14 @@ When creating rich stateful view controllers, a single view controller class is 
 `StateViewController` is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each child view controller, making sure that the view life cycle of the child view controllers are intact and in order, notifying you about state transitions and which child view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
 
 <p align="center">
-  <img src="./Images/state_transition.png" width="512" />  
+  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/state_transition.png" width="512" />  
 </p>
+
 
 The state view controller helps you manage child view controllers representing different states. In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.
 
 <p align="center">
-  <img src="./Images/lifecycle.png" width="512" />  
+  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/lifecycle.png" width="512" />  
 </p>
 
 ## Documentation

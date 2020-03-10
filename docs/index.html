@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (96% documented)
+         (62% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -55,13 +55,19 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StateViewController.html">StateViewController</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/StateViewControllerObserver.html">StateViewControllerObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/StateViewControllerObserver/Event.html">– Event</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Global Variables.html">Global Variables</a>
+            <a class="nav-group-name-link" href="Global%20Variables.html">Global Variables</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Global Variables.html#/s:19StateViewController07defaultA21TransitionCoordinatorAA0abceF0_pSgvp">defaultStateTransitionCoordinator</a>
+                <a class="nav-group-task-link" href="Global%20Variables.html#/s:19StateViewController07defaultA21TransitionCoordinatorAA0abceF0_pSgvp">defaultStateTransitionCoordinator</a>
               </li>
             </ul>
           </li>
@@ -80,6 +86,9 @@
             <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyStateViewControllerObserver.html">AnyStateViewControllerObserver</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/StateViewControllerTransitionCoordinator.html">StateViewControllerTransitionCoordinator</a>
               </li>
               <li class="nav-group-task">
@@ -92,20 +101,30 @@
       <article class="main-content">
 
         <section class="section">
-          <div class="section-content">
+          <div class="section-content top-matter">
             
-            <h1 id='stateviewcontroller' class='heading'>StateViewController</h1>
+            <p><img src="https://github.com/formbound/StateViewController/workflows/Build/badge.svg" alt="Build"></p>
+<h1 id='stateviewcontroller' class='heading'>StateViewController</h1>
 
 <p>When creating rich stateful view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often inferred from multiple properties that need to be synchronized to correctly represent a single state. Usually the end result is known as the <em>Massive View Controller</em> problem, often solved by deviating from the <a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html">MVC</a> pattern used and endorsed heavily by Apple. While other patterns, such as <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">MVVM</a> or <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter">MVP</a>, can solve your issues, going with the grain rather than against makes interacting with UIKit a whole lot easier. <em>This repository houses one dependency-free class, called <code><a href="Classes/StateViewController.html">StateViewController</a></code>, which is tasked with solving this issue.</em></p>
+<h3 id='supported-platforms' class='heading'>Supported Platforms</h3>
+
+<ul>
+<li>iOS 8.0 or later</li>
+<li>tvOS 9.0 or later</li>
+</ul>
 <h2 id='overview' class='heading'>Overview</h2>
 
-<p><code><a href="Classes/StateViewController.html">StateViewController</a></code> is a container view controller that presents one or more view controllers for any given state that you define, such as <code>loading</code>, <code>list</code>, or <code>editing</code>. It manages the appearance cycles of each content view controller, making sure that the view lifecycle of the content view controllers are intact and in order, notifying you about state transitions and which content view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.</p>
-<h2 id='typical-usecase' class='heading'>Typical usecase</h2>
+<p><code><a href="Classes/StateViewController.html">StateViewController</a></code> is a container view controller that presents one or more view controllers for any given state that you define, such as <code>loading</code>, <code>list</code>, or <code>editing</code>. It manages the appearance cycles of each child view controller, making sure that the view life cycle of the child view controllers are intact and in order, notifying you about state transitions and which child view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/state_transition.png" width="512" />  
+</p>
 
 <p>The state view controller helps you manage child view controllers representing different states. In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.</p>
 
-<p>
-    <img src="./Images/example_gif.gif" width="300" />
+<p align="center">
+  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/lifecycle.png" width="512" />  
 </p>
 <h2 id='documentation' class='heading'>Documentation</h2>
 
@@ -149,8 +168,8 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>Each state can be represented by zero or more view controllers. To provide which view controllers are visible for what state, override <code>contentViewControllers(for:)</code>.</p>
-<pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">contentViewControllers</span><span class="p">(</span><span class="k">for</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">MyState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">UIViewController</span><span class="p">]</span> <span class="p">{</span>
+<p>Each state can be represented by zero or more view controllers. To provide which view controllers are visible for what state, override <code>children(for:)</code>.</p>
+<pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">children</span><span class="p">(</span><span class="k">for</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">MyState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">UIViewController</span><span class="p">]</span> <span class="p">{</span>
     <span class="k">switch</span> <span class="n">state</span> <span class="p">{</span>
         <span class="k">case</span> <span class="o">.</span><span class="nv">loading</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span><span class="kt">ActivityIndicatorViewController</span><span class="p">()]</span>
@@ -163,7 +182,7 @@
 </code></pre>
 
 <p>You receive callbacks for when a state transition will begin, and when it has finished.
-<code>willTransition(to:animated:)</code> is a good place to prepare your content view controllers for appearance.</p>
+<code>willTransition(to:animated:)</code> is a good place to prepare your child view controllers for appearance.</p>
 <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">willTransition</span><span class="p">(</span><span class="n">to</span> <span class="nv">nextState</span><span class="p">:</span> <span class="kt">MyState</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">switch</span> <span class="n">nextState</span> <span class="p">{</span>
         <span class="k">case</span> <span class="o">.</span><span class="nf">ready</span><span class="p">(</span><span class="k">let</span> <span class="nv">model</span><span class="p">):</span>
@@ -190,7 +209,7 @@
 
 <p>Your <code><a href="Classes/StateViewController.html">StateViewController</a></code> is now ready, and will switch between view controllers depending on state.</p>
 
-<p>Multiple other callbacks are available for determining when a content view controller is appearing or disappearing. Please reference the documentation or the <a href="/Example">Example</a>.</p>
+<p>Multiple other callbacks are available for determining when a child view controller is appearing or disappearing. Please reference the documentation or the <a href="/Example">Example</a>.</p>
 
           </div>
         </section>
@@ -199,8 +218,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external">David Ask, Formbound AB</a>. All rights reserved. (Last updated: 2018-08-21)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">David Ask, Formbound AB</a>. All rights reserved. (Last updated: 2020-03-10)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
