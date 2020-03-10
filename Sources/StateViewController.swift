@@ -49,15 +49,15 @@ public var defaultStateTransitionCoordinator: StateViewControllerTransitionCoord
 /// ```
 ///
 /// To determine which content view controllers represent a particular state, you must override
-/// `contentViewControllers(for:)`.
+/// `children(for:)`.
 ///
 /// ```
-/// override func contentViewControllers(for state: MyViewControllerState) -> [UIViewController] {
+/// override func children(for state: MyViewControllerState) -> [UIViewController] {
 ///     switch state {
 ///     case .loading:
 ///         return [ActivityIndicatorViewController()]
 ///     case .empty:
-///         return [myContentViewController]
+///         return [myChild]
 ///     }
 /// }
 /// ```
@@ -72,7 +72,7 @@ public var defaultStateTransitionCoordinator: StateViewControllerTransitionCoord
 /// override func willTransition(to state: MyViewControllerState, animated: Bool) {
 ///     switch state {
 ///     case .ready:
-///         myContentViewController.content = myLoadedContent
+///         myChild.content = myLoadedContent
 ///     case .loading:
 ///         break
 ///     }
@@ -96,7 +96,7 @@ public var defaultStateTransitionCoordinator: StateViewControllerTransitionCoord
 /// }
 /// ```
 ///
-/// You may also override `loadContentViewControllerContainerView()` to provide a custom container view for your
+/// You may also override `loadChildContainerView()` to provide a custom container view for your
 /// content view controllers, allowing you to manipulate the view hierarchy above and below the content view
 /// controller container view.
 ///
@@ -144,9 +144,9 @@ open class StateViewController<State: Equatable>: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        contentViewControllerContainerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        contentViewControllerContainerView.frame = view.bounds
-        view.addSubview(contentViewControllerContainerView)
+        childContainerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        childContainerView.frame = view.bounds
+        view.addSubview(childContainerView)
     }
 
     /// :nodoc:
@@ -175,7 +175,7 @@ open class StateViewController<State: Equatable>: UIViewController {
         // As we're not yet setting the `isInAppearanceTransition` to `true`, the appearance methods
         // for each child view controller below will be forwarded correctly.
         for child in viewControllersBeingRemoved {
-            removeContentViewController(child, animated: false)
+            removeChild(child, animated: false)
         }
 
         // Note that we're in an appearance transition
@@ -199,7 +199,7 @@ open class StateViewController<State: Equatable>: UIViewController {
         // `didMove(to:)` is called on child view controllers.
         if isApplyingAppearanceState {
             for child in viewControllersBeingAdded {
-                didAddContentViewController(child, animated: animated)
+                didAddChild(child, animated: animated)
             }
         }
 
@@ -219,7 +219,7 @@ open class StateViewController<State: Equatable>: UIViewController {
         /// If there are view controllers being added as part of a current state transition, we should
         // add them immediately.
         for child in viewControllersBeingAdded {
-            didAddContentViewController(child, animated: animated)
+            didAddChild(child, animated: animated)
         }
 
         // Note that we're in an appearance transition
@@ -238,7 +238,7 @@ open class StateViewController<State: Equatable>: UIViewController {
 
         // Prematurely remove all view controllers begin removed
         for child in viewControllersBeingRemoved {
-            removeContentViewController(child, animated: animated)
+            removeChild(child, animated: animated)
         }
 
         // Forward end appearance transitions. Will only affect child view controllers not currently
@@ -324,11 +324,11 @@ open class StateViewController<State: Equatable>: UIViewController {
 
         guard animated else {
             for viewController in viewControllersBeingAdded {
-                didAddContentViewController(viewController, animated: animated)
+                didAddChild(viewController, animated: animated)
             }
 
             for viewController in viewControllersBeingRemoved {
-                removeContentViewController(viewController, animated: animated)
+                removeChild(viewController, animated: animated)
             }
             return
         }
@@ -344,34 +344,52 @@ open class StateViewController<State: Equatable>: UIViewController {
     ///
     /// - Parameter state: State being represented
     /// - Returns: An array of view controllers
-    open func contentViewControllers(for state: State) -> [UIViewController] {
+    open func children(for state: State) -> [UIViewController] {
         return []
     }
 
-    /// Internal storage of `contentViewControllerContainerView`
-    private var _contentViewControllerContainerView: UIView?
+    /// :nodoc:
+    @available(*, unavailable, renamed: "children")
+    public func contentViewControllers(for state: State) -> [UIViewController] {
+        fatalError("Unavailable")
+    }
+
+    /// Internal storage of `childContainerView`
+    private var _childContainerView: UIView?
 
     /// Container view placed directly in the `StateViewController`s view.
     /// Content view controllers are placed inside this view, edge to edge.
     /// - Important: You should not directly manipulate the view hierarchy of this view
-    public var contentViewControllerContainerView: UIView {
-        guard let existing = _contentViewControllerContainerView else {
-            let new = loadContentViewControllerContainerView()
+    public var childContainerView: UIView {
+        guard let existing = _childContainerView else {
+            let new = loadChildContainerView()
             new.preservesSuperviewLayoutMargins = true
-            _contentViewControllerContainerView = new
+            _childContainerView = new
             return new
         }
 
         return existing
     }
 
-    /// Creates the `contentViewControllerContainerView` used as a container view for content view controllers.
+    /// :nodoc:
+    @available(*, unavailable, renamed: "childContainerView")
+    public var contentViewControllerContainerView: UIView {
+        fatalError("Unavailable")
+    }
+
+    /// Creates the `childContainerView` used as a container view for content view controllers.
     //
     /// - Note: This method is only called once.
     ///
     /// - Returns: A `UIView` if not overridden.
-    open func loadContentViewControllerContainerView() -> UIView {
+    open func loadChildContainerView() -> UIView {
         return UIView()
+    }
+
+    /// :nodoc:
+    @available(*, unavailable, renamed: "loadChildContainerView")
+    public func loadContentViewControllerContainerView() -> UIView {
+        fatalError("Unavailable")
     }
 
     // MARK: - Callbacks
@@ -405,7 +423,13 @@ open class StateViewController<State: Equatable>: UIViewController {
     /// - Parameters:
     ///   - viewController: View controller appearing.
     ///   - animated: Indicates whether the appearance is animated.
-    open func contentViewControllerWillAppear(_ viewController: UIViewController, animated: Bool) {
+    open func childWillAppear(_ child: UIViewController, animated: Bool) {
+        return
+    }
+
+    /// :nodoc:
+    @available(*, unavailable, renamed: "childWillAppear")
+    public func contentViewControllerWillAppear(_ child: UIViewController, animated: Bool) {
         return
     }
 
@@ -417,7 +441,13 @@ open class StateViewController<State: Equatable>: UIViewController {
     /// - Parameters:
     ///   - viewController: View controller appeared.
     ///   - animated: Indicates whether the apperance was animated.
-    open func contentViewControllerDidAppear(_ viewController: UIViewController, animated: Bool) {
+    open func childDidAppear(_ child: UIViewController, animated: Bool) {
+        return
+    }
+
+    /// :nodoc:
+    @available(*, unavailable, renamed: "childDidAppear")
+    public func contentViewControllerDidAppear(_ child: UIViewController, animated: Bool) {
         return
     }
 
@@ -428,7 +458,13 @@ open class StateViewController<State: Equatable>: UIViewController {
     /// - Parameters:
     ///   - viewController: View controller disappearing.
     ///   - animated: Indicates whether the disappearance is animated.
-    open func contentViewControllerWillDisappear(_ viewController: UIViewController, animated: Bool) {
+    open func childWillDisappear(_ child: UIViewController, animated: Bool) {
+        return
+    }
+
+    /// :nodoc:
+    @available(*, unavailable, renamed: "childWillDisappear")
+    public func contentViewControllerWillDisappear(_ child: UIViewController, animated: Bool) {
         return
     }
 
@@ -437,7 +473,13 @@ open class StateViewController<State: Equatable>: UIViewController {
     /// - Parameters:
     ///   - viewController: Content view controller disappearad.
     ///   - animated: Indicates whether the disappearance was animated.
-    open func contentViewControllerDidDisappear(_ viewController: UIViewController, animated: Bool) {
+    open func childDidDisappear(_ child: UIViewController, animated: Bool) {
+        return
+    }
+
+    /// :nodoc:
+    @available(*, unavailable, renamed: "childDidDisappear")
+    public func contentViewControllerDidDisappear(_ child: UIViewController, animated: Bool) {
         return
     }
 
@@ -450,10 +492,10 @@ open class StateViewController<State: Equatable>: UIViewController {
     /// non-nil, the returned `StateViewControllerTransitionCoordinator` is used to animate the state transition
     /// of the provided view controller.
     ///
-    /// - Parameter contentViewController: Content view controller.
+    /// - Parameter child: Content view controller.
     /// - Returns: A `StateViewControllerTransitionCoordinator`, or `nil`.
     open func stateTransitionCoordinator(
-        for contentViewController: UIViewController) -> StateViewControllerTransitionCoordinator? {
+        for child: UIViewController) -> StateViewControllerTransitionCoordinator? {
         return nil
     }
 }
@@ -476,9 +518,9 @@ fileprivate extension StateViewController {
 
             // Invoke the appropriate callback method
             if isAppearing {
-                contentViewControllerWillAppear(viewController, animated: animated)
+                childWillAppear(viewController, animated: animated)
             } else {
-                contentViewControllerWillDisappear(viewController, animated: animated)
+                childWillDisappear(viewController, animated: animated)
             }
 
             viewController.beginAppearanceTransition(isAppearing, animated: animated)
@@ -496,9 +538,9 @@ fileprivate extension StateViewController {
 
             // Invoke the appropriate callback method
             if didAppear {
-                contentViewControllerDidAppear(viewController, animated: animated)
+                childDidAppear(viewController, animated: animated)
             } else {
-                contentViewControllerDidDisappear(viewController, animated: animated)
+                childDidDisappear(viewController, animated: animated)
             }
         }
     }
@@ -541,7 +583,7 @@ fileprivate extension StateViewController {
         let previous = children
 
         // View controllers after the state transition
-        let next = contentViewControllers(for: state)
+        let next = children(for: state)
 
         // View controllers that were not representing the previous state
         let adding = next.filter { previous.contains($0) == false }
@@ -551,12 +593,12 @@ fileprivate extension StateViewController {
 
         // Prepare for removing view controllers
         for viewController in removing {
-            willRemoveContentViewController(viewController, animated: animated)
+            willRemoveChild(viewController, animated: animated)
         }
 
         // Prepare for adding view controllers
         for viewController in adding {
-            addContentViewController(viewController, animated: animated)
+            addChild(viewController, animated: animated)
         }
 
         #if os(iOS)
@@ -581,7 +623,7 @@ fileprivate extension StateViewController {
         // Perform animations for each adding view controller
         for viewController in viewControllersBeingAdded {
             performStateTransition(for: viewController, isAppearing: true) {
-                self.didAddContentViewController(viewController, animated: animated)
+                self.didAddChild(viewController, animated: animated)
                 self.endStateTransitionIfNeeded(animated: animated)
             }
         }
@@ -589,7 +631,7 @@ fileprivate extension StateViewController {
         // Perform animations for each removing view controller
         for viewController in viewControllersBeingRemoved {
             performStateTransition(for: viewController, isAppearing: false) {
-                self.removeContentViewController(viewController, animated: animated)
+                self.removeChild(viewController, animated: animated)
                 self.endStateTransitionIfNeeded(animated: animated)
             }
         }
@@ -745,20 +787,20 @@ fileprivate extension StateViewController {
 
     func updateHierarchy(of viewControllers: [UIViewController]) {
 
-        let previousSubviews = contentViewControllerContainerView.subviews
+        let previousSubviews = childContainerView.subviews
 
         for (index, viewController) in viewControllers.enumerated() {
             viewController.view.translatesAutoresizingMaskIntoConstraints = true
             viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            viewController.view.bounds.size = contentViewControllerContainerView.bounds.size
-            viewController.view.center = contentViewControllerContainerView.center
+            viewController.view.bounds.size = childContainerView.bounds.size
+            viewController.view.center = childContainerView.center
 
-            contentViewControllerContainerView.insertSubview(viewController.view, at: index)
+            childContainerView.insertSubview(viewController.view, at: index)
         }
 
         // Only proceed if the previous subviews of the content view controller container view
         // differ from the new subviews
-        guard previousSubviews.elementsEqual(contentViewControllerContainerView.subviews) == false else {
+        guard previousSubviews.elementsEqual(childContainerView.subviews) == false else {
             return
         }
 
@@ -798,81 +840,81 @@ fileprivate extension StateViewController {
     /// - Parameters:
     ///   - viewController: View controller to add
     ///   - animated: Whether part of an animated transition
-    func addContentViewController(_ viewController: UIViewController, animated: Bool) {
+    func addChild(_ child: UIViewController, animated: Bool) {
 
-        guard viewControllersBeingAdded.contains(viewController) == false else {
+        guard viewControllersBeingAdded.contains(child) == false else {
             return
         }
 
-        addChild(viewController)
+        addChild(child)
 
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
-            contentViewControllerWillAppear(viewController, animated: animated)
-            dispatchStateEvent(.contentWillAppear(viewController))
-            viewController.beginAppearanceTransition(true, animated: animated)
+            childWillAppear(child, animated: animated)
+            dispatchStateEvent(.contentWillAppear(child))
+            child.beginAppearanceTransition(true, animated: animated)
         }
 
-        viewControllersBeingAdded.insert(viewController)
+        viewControllersBeingAdded.insert(child)
     }
 
-    func didAddContentViewController(_ viewController: UIViewController, animated: Bool) {
+    func didAddChild(_ child: UIViewController, animated: Bool) {
 
-        guard viewControllersBeingAdded.contains(viewController) else {
+        guard viewControllersBeingAdded.contains(child) else {
             return
         }
 
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
-            dispatchStateEvent(.contentDidAppear(viewController))
-            viewController.endAppearanceTransition()
-            contentViewControllerDidAppear(viewController, animated: animated)
+            dispatchStateEvent(.contentDidAppear(child))
+            child.endAppearanceTransition()
+            childDidAppear(child, animated: animated)
         }
 
-        viewController.didMove(toParent: self)
-        viewControllersBeingAdded.remove(viewController)
+        child.didMove(toParent: self)
+        viewControllersBeingAdded.remove(child)
     }
 
-    func willRemoveContentViewController(_ viewController: UIViewController, animated: Bool) {
+    func willRemoveChild(_ child: UIViewController, animated: Bool) {
 
-        guard viewControllersBeingRemoved.contains(viewController) == false else {
+        guard viewControllersBeingRemoved.contains(child) == false else {
             return
         }
 
-        viewController.willMove(toParent: nil)
+        child.willMove(toParent: nil)
 
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
-            contentViewControllerWillDisappear(viewController, animated: animated)
-            dispatchStateEvent(.contentWillDisappear(viewController))
-            viewController.beginAppearanceTransition(false, animated: animated)
+            childWillDisappear(child, animated: animated)
+            dispatchStateEvent(.contentWillDisappear(child))
+            child.beginAppearanceTransition(false, animated: animated)
         }
 
-        viewControllersBeingRemoved.insert(viewController)
+        viewControllersBeingRemoved.insert(child)
     }
 
-    func removeContentViewController(_ viewController: UIViewController, animated: Bool) {
+    func removeChild(_ child: UIViewController, animated: Bool) {
 
-        guard viewControllersBeingRemoved.contains(viewController) else {
+        guard viewControllersBeingRemoved.contains(child) else {
             return
         }
 
-        viewController.view.removeFromSuperview()
+        child.view.removeFromSuperview()
         NotificationCenter.default.post(name: .stateViewControllerDidChangeViewHierarchy, object: self)
 
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
-            dispatchStateEvent(.contentDidDisappear(viewController))
-            viewController.endAppearanceTransition()
-            contentViewControllerDidDisappear(viewController, animated: animated)
+            dispatchStateEvent(.contentDidDisappear(child))
+            child.endAppearanceTransition()
+            childDidDisappear(child, animated: animated)
         }
 
-        viewController.removeFromParent()
-        viewControllersBeingRemoved.remove(viewController)
+        child.removeFromParent()
+        viewControllersBeingRemoved.remove(child)
     }
 }
 

@@ -43,7 +43,7 @@ class ListStateViewController: StateViewController<ListStateViewControllerState>
         return .loading
     }
 
-    override func contentViewControllers(for state: ListStateViewControllerState) -> [UIViewController] {
+    override func children(for state: ListStateViewControllerState) -> [UIViewController] {
         switch state {
         case .loading:
 
