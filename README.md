@@ -9,7 +9,7 @@ When creating rich stateful view controllers, a single view controller class is 
 * tvOS 9.0 or later
 
 ## Overview
-`StateViewController` is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each content view controller, making sure that the view lifecycle of the content view controllers are intact and in order, notifying you about state transitions and which content view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
+`StateViewController` is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each child view controller, making sure that the view life cycle of the child view controllers are intact and in order, notifying you about state transitions and which child view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
 
 <p align="center">
   <img src="./Images/state_transition.png" width="512" />  
@@ -75,10 +75,10 @@ override func loadAppearanceState() -> MyState {
 }
 ```
 
-Each state can be represented by zero or more view controllers. To provide which view controllers are visible for what state, override `contentViewControllers(for:)`.
+Each state can be represented by zero or more view controllers. To provide which view controllers are visible for what state, override `children(for:)`.
 
 ```swift
-override func contentViewControllers(for state: MyState) -> [UIViewController] {
+override func children(for state: MyState) -> [UIViewController] {
     switch state {
         case .loading:
             return [ActivityIndicatorViewController()]
@@ -91,7 +91,7 @@ override func contentViewControllers(for state: MyState) -> [UIViewController] {
 ```
 
 You receive callbacks for when a state transition will begin, and when it has finished.
-`willTransition(to:animated:)` is a good place to prepare your content view controllers for appearance.
+`willTransition(to:animated:)` is a good place to prepare your child view controllers for appearance.
 
 ```swift
 override func willTransition(to nextState: MyState, animated: Bool) {
@@ -122,5 +122,5 @@ override func didTransition(from previousState: State?, animated: Bool) {
 
 Your `StateViewController` is now ready, and will switch between view controllers depending on state.
 
-Multiple other callbacks are available for determining when a content view controller is appearing or disappearing. Please reference the documentation or the [Example](/Example).
+Multiple other callbacks are available for determining when a child view controller is appearing or disappearing. Please reference the documentation or the [Example](/Example).
 
