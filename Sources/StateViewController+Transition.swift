@@ -137,25 +137,49 @@ internal extension StateViewController {
     ///   - isAppearing: Whether the transition is animated
     ///   - completion: Completion handler
     func performStateTransition(
-        for viewController: ViewController,
+        for viewController: AnyViewController,
         isAppearing: Bool,
         completion: @escaping () -> Void) {
 
-        // Transitioning corodinator to use for the animation
+        let transitioning = viewController as? StateViewControllerTransitioning
 
-        viewController.stateTransitionWillBegin(isAppearing: isAppearing)
+        if let transitioning = transitioning {
+            transitioning.stateTransitionWillBegin(isAppearing: isAppearing)
+        } else {
+            #if canImport(UIKit)
+            viewController.view.alpha = isAppearing ? 0 : 1
+            #elseif canImport(AppKit)
+            viewController.view.alphaValue = isAppearing ? 0 : 1
+            #endif
+        }
 
         // Set up an animation block
         let animations: () -> Void = {
-            viewController.animateAlongsideStateTransition(isAppearing: isAppearing)
+            if let transitioning = transitioning {
+                transitioning.animateAlongsideStateTransition(isAppearing: isAppearing)
+            } else {
+                #if canImport(UIKit)
+                viewController.view.alpha = isAppearing ? 1 : 0
+                #elseif canImport(AppKit)
+                viewController.view.animator().alphaValue = isAppearing ? 1 : 0
+                #endif
+            }
         }
 
-        let duration = viewController.stateTransitionDuration(isAppearing: isAppearing)
+        let duration = transitioning?.stateTransitionDuration(isAppearing: isAppearing) ?? 0.5
 
-        let delay: TimeInterval = viewController.stateTransitionDelay(isAppearing: isAppearing)
+        let delay: TimeInterval = transitioning?.stateTransitionDelay(isAppearing: isAppearing) ?? 0.5
 
         let completion = {
-            viewController.stateTransitionDidEnd(isAppearing: isAppearing)
+            if let transitioning = transitioning {
+                transitioning.stateTransitionDidEnd(isAppearing: isAppearing)
+            } else {
+                #if canImport(UIKit)
+                viewController.view.alpha = 1
+                #elseif canImport(AppKit)
+                viewController.view.alphaValue = 1
+                #endif
+            }
             completion()
         }
 

@@ -6,7 +6,7 @@ import AppKit
 
 internal extension StateViewController {
 
-    func updateHierarchy(of viewControllers: [ViewController]) {
+    func updateHierarchy(of viewControllers: [AnyViewController]) {
 
         let previousSubviews = childContainerView.subviews
 
@@ -61,7 +61,7 @@ internal extension StateViewController {
     /// - Parameters:
     ///   - viewController: View controller to add
     ///   - animated: Whether part of an animated transition
-    func addChild(_ child: ViewController, animated: Bool) {
+    func addChild(_ child: AnyViewController, animated: Bool) {
 
         guard viewControllersBeingAdded.contains(child) == false else {
             return
@@ -82,7 +82,7 @@ internal extension StateViewController {
         viewControllersBeingAdded.insert(child)
     }
 
-    func didAddChild(_ child: ViewController, animated: Bool) {
+    func didAddChild(_ child: AnyViewController, animated: Bool) {
 
         guard viewControllersBeingAdded.contains(child) else {
             return
@@ -104,7 +104,7 @@ internal extension StateViewController {
         viewControllersBeingAdded.remove(child)
     }
 
-    func willRemoveChild(_ child: ViewController, animated: Bool) {
+    func willRemoveChild(_ child: AnyViewController, animated: Bool) {
 
         guard viewControllersBeingRemoved.contains(child) == false else {
             return
@@ -127,7 +127,7 @@ internal extension StateViewController {
         viewControllersBeingRemoved.insert(child)
     }
 
-    func removeChild(_ child: ViewController, animated: Bool) {
+    func removeChild(_ child: AnyViewController, animated: Bool) {
 
         guard viewControllersBeingRemoved.contains(child) else {
             return

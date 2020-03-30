@@ -1,9 +1,9 @@
 #if canImport(UIKit)
 import UIKit
-public typealias ViewController = UIViewController
+public typealias AnyViewController = UIViewController
 #elseif canImport(AppKit)
 import AppKit
-public typealias ViewController = NSViewController
+public typealias AnyViewController = NSViewController
 #endif
 
 public protocol StateChildViewController {}
@@ -105,13 +105,8 @@ public extension Notification.Name {
 /// content view controllers, allowing you to manipulate the view hierarchy above and below the content view
 /// controller container view.
 ///
-/// ## Animating state transitions
-/// By default, no animations are performed between states. To enable animations, you have three options:
-///
-/// - Set `defaultStateTransitioningCoordinator`
-/// - Override `stateTransitionCoordinator(for:)` in your `StateViewController` subclasses
-/// - Conform view controllers contained in `StateViewController` to `StateViewControllerTransitioning`.
-open class StateViewController<State: Equatable>: ViewController {
+
+open class StateViewController<State: Equatable>: AnyViewController {
 
     /// Current state storage
     internal var stateInternal: State?
@@ -131,10 +126,10 @@ open class StateViewController<State: Equatable>: ViewController {
     internal var pendingState: (state: State, animated: Bool)?
 
     /// Set of child view controllers being added as part of a state transition
-    internal var viewControllersBeingAdded: Set<ViewController> = []
+    internal var viewControllersBeingAdded: Set<AnyViewController> = []
 
     /// Set of child view controllers being removed as part of a state transition
-    internal var viewControllersBeingRemoved: Set<ViewController> = []
+    internal var viewControllersBeingRemoved: Set<AnyViewController> = []
 
     #if canImport(UIKit)
     /// :nodoc:
@@ -398,7 +393,7 @@ open class StateViewController<State: Equatable>: ViewController {
     ///
     /// - Parameter state: State being represented
     /// - Returns: An array of view controllers
-    open func children(for state: State) -> [ViewController] {
+    open func children(for state: State) -> [AnyViewController] {
         return []
     }
 
@@ -487,7 +482,7 @@ open class StateViewController<State: Equatable>: ViewController {
     /// - Parameters:
     ///   - viewController: View controller appearing.
     ///   - animated: Indicates whether the appearance is animated.
-    open func childWillAppear(_ child: ViewController, animated: Bool) {
+    open func childWillAppear(_ child: AnyViewController, animated: Bool) {
         return
     }
 
@@ -499,7 +494,7 @@ open class StateViewController<State: Equatable>: ViewController {
     /// - Parameters:
     ///   - viewController: View controller appeared.
     ///   - animated: Indicates whether the apperance was animated.
-    open func childDidAppear(_ child: ViewController, animated: Bool) {
+    open func childDidAppear(_ child: AnyViewController, animated: Bool) {
         return
     }
 
@@ -510,7 +505,7 @@ open class StateViewController<State: Equatable>: ViewController {
     /// - Parameters:
     ///   - viewController: View controller disappearing.
     ///   - animated: Indicates whether the disappearance is animated.
-    open func childWillDisappear(_ child: ViewController, animated: Bool) {
+    open func childWillDisappear(_ child: AnyViewController, animated: Bool) {
         return
     }
 
@@ -519,7 +514,7 @@ open class StateViewController<State: Equatable>: ViewController {
     /// - Parameters:
     ///   - viewController: Content view controller disappearad.
     ///   - animated: Indicates whether the disappearance was animated.
-    open func childDidDisappear(_ child: ViewController, animated: Bool) {
+    open func childDidDisappear(_ child: AnyViewController, animated: Bool) {
         return
     }
 }
