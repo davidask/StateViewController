@@ -10,13 +10,21 @@
 		6325167D224E221A00235B46 /* StateViewControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6325167C224E221A00235B46 /* StateViewControllerObserver.swift */; };
 		B72B725C24181479007B7C10 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C4212052FA00020277 /* StateViewController.swift */; };
 		B72B725D24181479007B7C10 /* StateViewControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6325167C224E221A00235B46 /* StateViewControllerObserver.swift */; };
-		B72B725E24181479007B7C10 /* StateViewControllerTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */; };
-		B72B725F24181479007B7C10 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */; };
 		B72B726124181616007B7C10 /* StateViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B76AA3C92120531600020277 /* StateViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B76AA3C6212052FA00020277 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C4212052FA00020277 /* StateViewController.swift */; };
-		B76AA3C7212052FA00020277 /* StateViewControllerTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */; };
 		B76AA3CB2120531600020277 /* StateViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B76AA3C92120531600020277 /* StateViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B76AA3DA212053D800020277 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */; };
+		B7C0934C24313F63001DFFA8 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C4212052FA00020277 /* StateViewController.swift */; };
+		B7C0934D24313F63001DFFA8 /* StateViewControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6325167C224E221A00235B46 /* StateViewControllerObserver.swift */; };
+		B7C0935624314622001DFFA8 /* StateViewController-macOS.h in Headers */ = {isa = PBXBuildFile; fileRef = B7C0935524314618001DFFA8 /* StateViewController-macOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B7C0937424324586001DFFA8 /* StateViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937324324586001DFFA8 /* StateViewController+Hierarchy.swift */; };
+		B7C0937524324586001DFFA8 /* StateViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937324324586001DFFA8 /* StateViewController+Hierarchy.swift */; };
+		B7C0937624324586001DFFA8 /* StateViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937324324586001DFFA8 /* StateViewController+Hierarchy.swift */; };
+		B7C0937824324695001DFFA8 /* StateViewController+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937724324695001DFFA8 /* StateViewController+Transition.swift */; };
+		B7C0937924324695001DFFA8 /* StateViewController+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937724324695001DFFA8 /* StateViewController+Transition.swift */; };
+		B7C0937A24324695001DFFA8 /* StateViewController+Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937724324695001DFFA8 /* StateViewController+Transition.swift */; };
+		B7C0937C24325072001DFFA8 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937B24325072001DFFA8 /* StateViewControllerTransitioning.swift */; };
+		B7C0937D24325072001DFFA8 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937B24325072001DFFA8 /* StateViewControllerTransitioning.swift */; };
+		B7C0937E24325072001DFFA8 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C0937B24325072001DFFA8 /* StateViewControllerTransitioning.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,10 +32,13 @@
 		B72B725424181455007B7C10 /* StateViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76AA3B7212052B500020277 /* StateViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76AA3C4212052FA00020277 /* StateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewController.swift; sourceTree = "<group>"; };
-		B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewControllerTransitionCoordinator.swift; sourceTree = "<group>"; };
 		B76AA3C82120531600020277 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B76AA3C92120531600020277 /* StateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateViewController.h; sourceTree = "<group>"; };
-		B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateViewControllerTransitioning.swift; sourceTree = "<group>"; };
+		B7C0934324313F34001DFFA8 /* StateViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7C0935524314618001DFFA8 /* StateViewController-macOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StateViewController-macOS.h"; sourceTree = "<group>"; };
+		B7C0937324324586001DFFA8 /* StateViewController+Hierarchy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StateViewController+Hierarchy.swift"; sourceTree = "<group>"; };
+		B7C0937724324695001DFFA8 /* StateViewController+Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StateViewController+Transition.swift"; sourceTree = "<group>"; };
+		B7C0937B24325072001DFFA8 /* StateViewControllerTransitioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewControllerTransitioning.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +50,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B76AA3B3212052B500020277 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C0934024313F34001DFFA8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -62,6 +80,7 @@
 			children = (
 				B76AA3B7212052B500020277 /* StateViewController.framework */,
 				B72B725424181455007B7C10 /* StateViewController.framework */,
+				B7C0934324313F34001DFFA8 /* StateViewController.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -69,6 +88,7 @@
 		B76AA3C2212052FA00020277 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				B7C0935524314618001DFFA8 /* StateViewController-macOS.h */,
 				B76AA3C82120531600020277 /* Info.plist */,
 				B76AA3C92120531600020277 /* StateViewController.h */,
 			);
@@ -78,10 +98,11 @@
 		B76AA3C3212052FA00020277 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B7C0937B24325072001DFFA8 /* StateViewControllerTransitioning.swift */,
 				B76AA3C4212052FA00020277 /* StateViewController.swift */,
 				6325167C224E221A00235B46 /* StateViewControllerObserver.swift */,
-				B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */,
-				B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */,
+				B7C0937324324586001DFFA8 /* StateViewController+Hierarchy.swift */,
+				B7C0937724324695001DFFA8 /* StateViewController+Transition.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -102,6 +123,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B76AA3CB2120531600020277 /* StateViewController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C0933E24313F34001DFFA8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7C0935624314622001DFFA8 /* StateViewController-macOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +175,24 @@
 			productReference = B76AA3B7212052B500020277 /* StateViewController.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B7C0934224313F34001DFFA8 /* StateViewController macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7C0934A24313F34001DFFA8 /* Build configuration list for PBXNativeTarget "StateViewController macOS" */;
+			buildPhases = (
+				B7C0933E24313F34001DFFA8 /* Headers */,
+				B7C0933F24313F34001DFFA8 /* Sources */,
+				B7C0934024313F34001DFFA8 /* Frameworks */,
+				B7C0934124313F34001DFFA8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "StateViewController macOS";
+			productName = StateViewController;
+			productReference = B7C0934324313F34001DFFA8 /* StateViewController.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -161,6 +208,9 @@
 					B76AA3B6212052B500020277 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1130;
+					};
+					B7C0934224313F34001DFFA8 = {
+						CreatedOnToolsVersion = 11.4;
 					};
 				};
 			};
@@ -179,6 +229,7 @@
 			targets = (
 				B76AA3B6212052B500020277 /* StateViewController iOS */,
 				B72B725324181455007B7C10 /* StateViewController tvOS */,
+				B7C0934224313F34001DFFA8 /* StateViewController macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -192,6 +243,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B76AA3B5212052B500020277 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C0934124313F34001DFFA8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -242,8 +300,9 @@
 			files = (
 				B72B725D24181479007B7C10 /* StateViewControllerObserver.swift in Sources */,
 				B72B725C24181479007B7C10 /* StateViewController.swift in Sources */,
-				B72B725F24181479007B7C10 /* StateViewControllerTransitioning.swift in Sources */,
-				B72B725E24181479007B7C10 /* StateViewControllerTransitionCoordinator.swift in Sources */,
+				B7C0937D24325072001DFFA8 /* StateViewControllerTransitioning.swift in Sources */,
+				B7C0937524324586001DFFA8 /* StateViewController+Hierarchy.swift in Sources */,
+				B7C0937924324695001DFFA8 /* StateViewController+Transition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,8 +312,21 @@
 			files = (
 				6325167D224E221A00235B46 /* StateViewControllerObserver.swift in Sources */,
 				B76AA3C6212052FA00020277 /* StateViewController.swift in Sources */,
-				B76AA3C7212052FA00020277 /* StateViewControllerTransitionCoordinator.swift in Sources */,
-				B76AA3DA212053D800020277 /* StateViewControllerTransitioning.swift in Sources */,
+				B7C0937C24325072001DFFA8 /* StateViewControllerTransitioning.swift in Sources */,
+				B7C0937424324586001DFFA8 /* StateViewController+Hierarchy.swift in Sources */,
+				B7C0937824324695001DFFA8 /* StateViewController+Transition.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7C0933F24313F34001DFFA8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7C0934D24313F63001DFFA8 /* StateViewControllerObserver.swift in Sources */,
+				B7C0934C24313F63001DFFA8 /* StateViewController.swift in Sources */,
+				B7C0937E24325072001DFFA8 /* StateViewControllerTransitioning.swift in Sources */,
+				B7C0937624324586001DFFA8 /* StateViewController+Hierarchy.swift in Sources */,
+				B7C0937A24324695001DFFA8 /* StateViewController+Transition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +558,61 @@
 			};
 			name = Release;
 		};
+		B7C0934824313F34001DFFA8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.StateViewController;
+				PRODUCT_NAME = StateViewController;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B7C0934924313F34001DFFA8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = XPHB8XN6PN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bintrail.StateViewController;
+				PRODUCT_NAME = StateViewController;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -512,6 +639,15 @@
 			buildConfigurations = (
 				B76AA3C0212052B500020277 /* Debug */,
 				B76AA3C1212052B500020277 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7C0934A24313F34001DFFA8 /* Build configuration list for PBXNativeTarget "StateViewController macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7C0934824313F34001DFFA8 /* Debug */,
+				B7C0934924313F34001DFFA8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

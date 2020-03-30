@@ -1,4 +1,8 @@
+#if canImport(AppKit)
+import AppKit
+#elseif canImport(UIKit)
 import UIKit
+#endif
 
 /// View controllers can conform to this protocol to provide their desired
 /// state transitioning behaviour when contained in a `StateViewController`.
@@ -31,3 +35,30 @@ public protocol StateViewControllerTransitioning: AnyObject {
     /// - Returns: A transition duration.
     func stateTransitionDelay(isAppearing: Bool) -> TimeInterval
 }
+
+#if canImport(AppKit)
+extension NSViewController: StateViewControllerTransitioning {
+
+    public func stateTransitionDuration(isAppearing: Bool) -> TimeInterval {
+        0.5
+    }
+
+    public func stateTransitionWillBegin(isAppearing: Bool) {
+        view.alphaValue = isAppearing ? 0 : 1
+    }
+
+    public func stateTransitionDidEnd(isAppearing: Bool) {
+        view.alphaValue = 1
+    }
+
+    public func animateAlongsideStateTransition(isAppearing: Bool) {
+        view.animator().alphaValue = isAppearing ? 1 : 0
+    }
+
+    public func stateTransitionDelay(isAppearing: Bool) -> TimeInterval {
+        0
+    }
+
+
+}
+#endif
