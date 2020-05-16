@@ -7,27 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6325167D224E221A00235B46 /* StateViewControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6325167C224E221A00235B46 /* StateViewControllerObserver.swift */; };
-		B72B725C24181479007B7C10 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C4212052FA00020277 /* StateViewController.swift */; };
-		B72B725D24181479007B7C10 /* StateViewControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6325167C224E221A00235B46 /* StateViewControllerObserver.swift */; };
-		B72B725E24181479007B7C10 /* StateViewControllerTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */; };
-		B72B725F24181479007B7C10 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */; };
 		B72B726124181616007B7C10 /* StateViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B76AA3C92120531600020277 /* StateViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B76AA3C6212052FA00020277 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C4212052FA00020277 /* StateViewController.swift */; };
-		B76AA3C7212052FA00020277 /* StateViewControllerTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */; };
 		B76AA3CB2120531600020277 /* StateViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B76AA3C92120531600020277 /* StateViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B76AA3DA212053D800020277 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */; };
+		B7A91AD0246FEFBB006730F1 /* StateViewControllerTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A91ACC246FEFBB006730F1 /* StateViewControllerTransitionCoordinator.swift */; };
+		B7A91AD1246FEFBB006730F1 /* StateViewControllerTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A91ACC246FEFBB006730F1 /* StateViewControllerTransitionCoordinator.swift */; };
+		B7A91AD2246FEFBB006730F1 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A91ACD246FEFBB006730F1 /* StateViewControllerTransitioning.swift */; };
+		B7A91AD3246FEFBB006730F1 /* StateViewControllerTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A91ACD246FEFBB006730F1 /* StateViewControllerTransitioning.swift */; };
+		B7A91AD4246FEFBB006730F1 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A91ACE246FEFBB006730F1 /* StateViewController.swift */; };
+		B7A91AD5246FEFBB006730F1 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A91ACE246FEFBB006730F1 /* StateViewController.swift */; };
+		B7A91AD6246FEFBB006730F1 /* StateViewControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A91ACF246FEFBB006730F1 /* StateViewControllerObserver.swift */; };
+		B7A91AD7246FEFBB006730F1 /* StateViewControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A91ACF246FEFBB006730F1 /* StateViewControllerObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6325167C224E221A00235B46 /* StateViewControllerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateViewControllerObserver.swift; sourceTree = "<group>"; };
 		B72B725424181455007B7C10 /* StateViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76AA3B7212052B500020277 /* StateViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B76AA3C4212052FA00020277 /* StateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewController.swift; sourceTree = "<group>"; };
-		B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewControllerTransitionCoordinator.swift; sourceTree = "<group>"; };
 		B76AA3C82120531600020277 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B76AA3C92120531600020277 /* StateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateViewController.h; sourceTree = "<group>"; };
-		B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateViewControllerTransitioning.swift; sourceTree = "<group>"; };
+		B7A91ACA246FED3D006730F1 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		B7A91ACC246FEFBB006730F1 /* StateViewControllerTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewControllerTransitionCoordinator.swift; sourceTree = "<group>"; };
+		B7A91ACD246FEFBB006730F1 /* StateViewControllerTransitioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewControllerTransitioning.swift; sourceTree = "<group>"; };
+		B7A91ACE246FEFBB006730F1 /* StateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewController.swift; sourceTree = "<group>"; };
+		B7A91ACF246FEFBB006730F1 /* StateViewControllerObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewControllerObserver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +52,7 @@
 		B76AA3AD212052B500020277 = {
 			isa = PBXGroup;
 			children = (
+				B7A91ACA246FED3D006730F1 /* Package.swift */,
 				B76AA3C2212052FA00020277 /* Framework */,
 				B76AA3C3212052FA00020277 /* Sources */,
 				B76AA3B8212052B500020277 /* Products */,
@@ -78,12 +80,20 @@
 		B76AA3C3212052FA00020277 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				B76AA3C4212052FA00020277 /* StateViewController.swift */,
-				6325167C224E221A00235B46 /* StateViewControllerObserver.swift */,
-				B76AA3C5212052FA00020277 /* StateViewControllerTransitionCoordinator.swift */,
-				B76AA3D9212053D800020277 /* StateViewControllerTransitioning.swift */,
+				B7A91ACB246FEFBB006730F1 /* StateViewController */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		B7A91ACB246FEFBB006730F1 /* StateViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B7A91ACC246FEFBB006730F1 /* StateViewControllerTransitionCoordinator.swift */,
+				B7A91ACD246FEFBB006730F1 /* StateViewControllerTransitioning.swift */,
+				B7A91ACE246FEFBB006730F1 /* StateViewController.swift */,
+				B7A91ACF246FEFBB006730F1 /* StateViewControllerObserver.swift */,
+			);
+			path = StateViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,10 +250,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B72B725D24181479007B7C10 /* StateViewControllerObserver.swift in Sources */,
-				B72B725C24181479007B7C10 /* StateViewController.swift in Sources */,
-				B72B725F24181479007B7C10 /* StateViewControllerTransitioning.swift in Sources */,
-				B72B725E24181479007B7C10 /* StateViewControllerTransitionCoordinator.swift in Sources */,
+				B7A91AD7246FEFBB006730F1 /* StateViewControllerObserver.swift in Sources */,
+				B7A91AD5246FEFBB006730F1 /* StateViewController.swift in Sources */,
+				B7A91AD3246FEFBB006730F1 /* StateViewControllerTransitioning.swift in Sources */,
+				B7A91AD1246FEFBB006730F1 /* StateViewControllerTransitionCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,10 +261,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6325167D224E221A00235B46 /* StateViewControllerObserver.swift in Sources */,
-				B76AA3C6212052FA00020277 /* StateViewController.swift in Sources */,
-				B76AA3C7212052FA00020277 /* StateViewControllerTransitionCoordinator.swift in Sources */,
-				B76AA3DA212053D800020277 /* StateViewControllerTransitioning.swift in Sources */,
+				B7A91AD6246FEFBB006730F1 /* StateViewControllerObserver.swift in Sources */,
+				B7A91AD4246FEFBB006730F1 /* StateViewController.swift in Sources */,
+				B7A91AD2246FEFBB006730F1 /* StateViewControllerTransitioning.swift in Sources */,
+				B7A91AD0246FEFBB006730F1 /* StateViewControllerTransitionCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

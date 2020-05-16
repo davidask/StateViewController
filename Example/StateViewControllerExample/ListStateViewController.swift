@@ -91,4 +91,10 @@ class ListStateViewController: StateViewController<ListStateViewControllerState>
         self.setNeedsStateTransition(to: .loading, animated: true)
     }
 
+override func childDidAppear(_ child: UIViewController, animated: Bool) {
+    super.childDidAppear(child, animated: animated)
+
+    print("SELF", view.readableContentGuide.layoutFrame)
+    print("CHILD", child.view.readableContentGuide.layoutFrame)
+}
 }
