@@ -22,8 +22,6 @@ The state view controller helps you manage child view controllers representing d
 <p align="center">
   <img src="Images/state_transition.png" />  
 </p>
-*StateViewController coordinates state transition with view controller lifecycles*
-
 
 
 ## Documentation

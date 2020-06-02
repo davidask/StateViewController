@@ -1,129 +1,17 @@
 {
   "warnings": [
     {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewController.swift",
-      "line": 290,
+      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewController/StateViewController.swift",
+      "line": 285,
       "symbol": "StateViewController.hasDeterminedState",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewController.swift",
-      "line": 302,
+      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewController/StateViewController.swift",
+      "line": 297,
       "symbol": "StateViewController.loadAppearanceState()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewController.swift",
-      "line": 922,
-      "symbol": "StateViewController.addStateObserver(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewController.swift",
-      "line": 933,
-      "symbol": "StateViewController.removeStateObserver(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 1,
-      "symbol": "AnyStateViewControllerObserver",
-      "symbol_kind": "source.lang.swift.decl.protocol",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 2,
-      "symbol": "AnyStateViewControllerObserver.remove()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 5,
-      "symbol": "StateViewControllerObserver",
-      "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 7,
-      "symbol": "StateViewControllerObserver.EventHandler",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 9,
-      "symbol": "StateViewControllerObserver.Event",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 10,
-      "symbol": "StateViewControllerObserver.Event.willTransitionTo(nextState:animated:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 11,
-      "symbol": "StateViewControllerObserver.Event.didTransitionFrom(previousState:animated:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 13,
-      "symbol": "StateViewControllerObserver.Event.didChangeHierarhcy",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 15,
-      "symbol": "StateViewControllerObserver.Event.contentWillAppear(_:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 16,
-      "symbol": "StateViewControllerObserver.Event.contentDidAppear(_:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 18,
-      "symbol": "StateViewControllerObserver.Event.contentWillDisappear(_:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 19,
-      "symbol": "StateViewControllerObserver.Event.contentDidDisappear(_:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 31,
-      "symbol": "StateViewControllerObserver.remove()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewControllerObserver.swift",
-      "line": 40,
-      "symbol": "StateViewControllerObserver",
-      "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     }
   ],

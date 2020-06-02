@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (62% documented)
+         (90% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -55,20 +55,6 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StateViewController.html">StateViewController</a>
               </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/StateViewControllerObserver.html">StateViewControllerObserver</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/StateViewControllerObserver/Event.html">– Event</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Global%20Variables.html">Global Variables</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Global%20Variables.html#/s:19StateViewController07defaultA21TransitionCoordinatorAA0abceF0_pSgvp">defaultStateTransitionCoordinator</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -86,12 +72,6 @@
             <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/AnyStateViewControllerObserver.html">AnyStateViewControllerObserver</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/StateViewControllerTransitionCoordinator.html">StateViewControllerTransitionCoordinator</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/StateViewControllerTransitioning.html">StateViewControllerTransitioning</a>
               </li>
             </ul>
@@ -106,25 +86,23 @@
             <p><img src="https://github.com/formbound/StateViewController/workflows/Build/badge.svg" alt="Build"></p>
 <h1 id='stateviewcontroller' class='heading'>StateViewController</h1>
 
-<p>When creating rich stateful view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often inferred from multiple properties that need to be synchronized to correctly represent a single state. Usually the end result is known as the <em>Massive View Controller</em> problem, often solved by deviating from the <a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html">MVC</a> pattern used and endorsed heavily by Apple. While other patterns, such as <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">MVVM</a> or <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter">MVP</a>, can solve your issues, going with the grain rather than against makes interacting with UIKit a whole lot easier. <em>This repository houses one dependency-free class, called <code><a href="Classes/StateViewController.html">StateViewController</a></code>, which is tasked with solving this issue.</em></p>
-<h3 id='supported-platforms' class='heading'>Supported Platforms</h3>
+<p>When creating rich view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often derived from multiple sources that need to be synchronized to correctly represent a single reliable state. Usually the end result is known as the <em>Massive View Controller</em> problem, often solved by attempts to abandon the <a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html">MVC</a> pattern, the primary design pattern in UIKit. While other patterns, such as <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">MVVM</a> or <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter">MVP</a>, can solve some issues, going with the grain rather than against makes interacting with UIKit more accomodating. </p>
+
+<p>This repository houses a <code>UIViewController</code> subclass, enabling modularization and decoupling of view controllers, reducing the size of individual view controllers substantially, without the need for abandoning MVC as a design pattern.</p>
+<h2 id='requirements' class='heading'>Requirements</h2>
 
 <ul>
-<li>iOS 8.0 or later</li>
-<li>tvOS 9.0 or later</li>
+<li>iOS 8.0+</li>
+<li>tvOS 9.0+</li>
 </ul>
 <h2 id='overview' class='heading'>Overview</h2>
 
 <p><code><a href="Classes/StateViewController.html">StateViewController</a></code> is a container view controller that presents one or more view controllers for any given state that you define, such as <code>loading</code>, <code>list</code>, or <code>editing</code>. It manages the appearance cycles of each child view controller, making sure that the view life cycle of the child view controllers are intact and in order, notifying you about state transitions and which child view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.</p>
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/state_transition.png" width="512" />  
-</p>
-
 <p>The state view controller helps you manage child view controllers representing different states. In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.</p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/lifecycle.png" width="512" />  
+  <img src="Images/state_transition.png" />  
 </p>
 <h2 id='documentation' class='heading'>Documentation</h2>
 
@@ -137,6 +115,7 @@
 <h2 id='usage' class='heading'>Usage</h2>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">StateViewController</span>
 </code></pre>
+<h3 id='subclassing-stateviewcontroller' class='heading'>Subclassing StateViewController</h3>
 
 <p>To use <code><a href="Classes/StateViewController.html">StateViewController</a></code> you must override it. The class is generic with a subtype of <code>State</code> which must conform to <code>Equatable</code>. The state type can be designed to house the actual model data required by your view controller, but that&rsquo;s an optional design decision. For instance, you can create a state that simply determines an abstract state:</p>
 <pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">MyState</span><span class="p">:</span> <span class="kt">Equatable</span> <span class="p">{</span>
@@ -207,9 +186,25 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>Your <code><a href="Classes/StateViewController.html">StateViewController</a></code> is now ready, and will switch between view controllers depending on state.</p>
+<p>Your <code><a href="Classes/StateViewController.html">StateViewController</a></code> is now ready, and will switch between view controllers depending on state. Using <code>setNeedsTransition(:to:animated:)</code> you can transition between various states during the life cycle of your state view controller subclass.</p>
 
 <p>Multiple other callbacks are available for determining when a child view controller is appearing or disappearing. Please reference the documentation or the <a href="/Example">Example</a>.</p>
+<h3 id='providing-transitions-between-child-view-controllers' class='heading'>Providing transitions between child view controllers</h3>
+
+<p>Child view controllers of <code><a href="Classes/StateViewController.html">StateViewController</a></code> conforming to the <a href="Sources/StateViewController/StateViewControllerTransitioning.swift"><code><a href="Protocols/StateViewControllerTransitioning.html">StateViewControllerTransitioning</a></code></a> protocol can individually control their own transition. The available methods provide funtionality for:</p>
+
+<ul>
+<li>Specifying duration and delayed start of an animated transition</li>
+<li>Preparing the view controller for presentation</li>
+<li>Performing animations along side an animated transition</li>
+<li>Performing operations after a transition</li>
+</ul>
+<h2 id='contribute' class='heading'>Contribute</h2>
+
+<p>Please feel welcome contributing to <strong>StateViewController</strong>, check the <code>LICENSE</code> file for more info.</p>
+<h2 id='credits' class='heading'>Credits</h2>
+
+<p>David Ask</p>
 
           </div>
         </section>
@@ -218,7 +213,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">David Ask, Formbound AB</a>. All rights reserved. (Last updated: 2020-03-10)</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external">David Ask, Formbound AB</a>. All rights reserved. (Last updated: 2020-06-02)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
