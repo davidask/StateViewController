@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: iOS - ${{ matrix.destination }}
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "StateViewController.xcodeproj" -scheme "StateViewController-Package" -destination "${{ matrix.destination }}" clean test | xcpretty
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "StateViewController.xcodeproj" -scheme "StateViewController-Package" -destination "${{ matrix.destination }}" clean build | xcpretty
   tvOS:
     name: Test tvOS 
     runs-on: macOS-latest
@@ -27,4 +27,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: tvOS - ${{ matrix.destination }}
-        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "StateViewController.xcodeproj" -scheme "StateViewController-Package" -destination "${{ matrix.destination }}" clean test | xcpretty
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project "StateViewController.xcodeproj" -scheme "StateViewController-Package" -destination "${{ matrix.destination }}" clean build | xcpretty
