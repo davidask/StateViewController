@@ -32,7 +32,7 @@ class ListStateViewController: StateViewController<ListStateViewControllerState>
         super.viewDidLoad()
     }
 
-    lazy private var tableViewController: TableViewController = {
+    private lazy var tableViewController: TableViewController = {
         // swiftlint:disable force_cast
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         return storyboard.instantiateViewController(withIdentifier: "tableViewController") as! TableViewController

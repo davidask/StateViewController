@@ -33,7 +33,11 @@ class TableViewController: UITableViewController {
         return tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
     }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    override func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
 
         let comment = comments[indexPath.row]
 
@@ -41,7 +45,6 @@ class TableViewController: UITableViewController {
         cell.detailTextLabel?.text = comment.body
     }
 }
-
 
 extension TableViewController: StateViewControllerTransitioning {
 

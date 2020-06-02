@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.2
 
 import PackageDescription
 
@@ -17,6 +17,5 @@ let package = Package(
         .target(
             name: "StateViewController",
             dependencies: [])
-
     ]
 )

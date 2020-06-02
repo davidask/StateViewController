@@ -1,14 +1,11 @@
+import UIKit
+
 public extension Notification.Name {
     /// Notification name that fires when a state view controller updates its view hierarchy
     static let stateViewControllerDidChangeViewHierarchy = Notification.Name(
         "stateViewControllerDidChangeViewHierarchy"
     )
 }
-
-/// The default `StateViewControllerTransitionCoordinator` used, if `stateTransitionCoordinator(for:)` returns nil
-/// or if a view content view controller of `StateViewController` does not conform to
-/// `StateViewControllerTransitioning`.
-public var defaultStateTransitionCoordinator: StateViewControllerTransitionCoordinator?
 
 /// A container view controller that manages the appearance of one or more child view controller for any given state.
 ///
@@ -132,16 +129,14 @@ open class StateViewController<State: Equatable>: UIViewController {
     fileprivate var viewControllersBeingRemoved: Set<UIViewController> = []
 
     /// :nodoc:
-    public final override var shouldAutomaticallyForwardAppearanceMethods: Bool {
+    override public final var shouldAutomaticallyForwardAppearanceMethods: Bool {
         return false // We completely manage forwarding of appearance methods ourselves.
     }
-
-    fileprivate var observers: [StateViewControllerObserver<State>] = []
 
     // MARK: - View lifecycle
 
     /// :nodoc:
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         childContainerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -150,7 +145,7 @@ open class StateViewController<State: Equatable>: UIViewController {
     }
 
     /// :nodoc:
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // When `viewWillAppear(animated:)` is called we do not yet connsider ourselves in an appearance transition
@@ -186,7 +181,7 @@ open class StateViewController<State: Equatable>: UIViewController {
     }
 
     /// :nodoc:
-    open override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // Note that we're no longer in an appearance transition
@@ -208,7 +203,7 @@ open class StateViewController<State: Equatable>: UIViewController {
     }
 
     /// :nodoc:
-    open override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         isInAppearanceTransition = false
@@ -230,7 +225,7 @@ open class StateViewController<State: Equatable>: UIViewController {
     }
 
     /// :nodoc:
-    open override func viewDidDisappear(_ animated: Bool) {
+    override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         // Note that we're no longer in an apperance transition
@@ -252,21 +247,21 @@ open class StateViewController<State: Equatable>: UIViewController {
     // MARK: - Container view controller forwarding
 
     #if os(iOS)
-    open override var childForStatusBarStyle: UIViewController? {
+    override open var childForStatusBarStyle: UIViewController? {
         children.last
     }
 
-    open override var childForStatusBarHidden: UIViewController? {
-        children.last
-    }
-
-    @available(iOS 11, *)
-    open override var childForScreenEdgesDeferringSystemGestures: UIViewController? {
+    override open var childForStatusBarHidden: UIViewController? {
         children.last
     }
 
     @available(iOS 11, *)
-    open override var childForHomeIndicatorAutoHidden: UIViewController? {
+    override open var childForScreenEdgesDeferringSystemGestures: UIViewController? {
+        children.last
+    }
+
+    @available(iOS 11, *)
+    override open var childForHomeIndicatorAutoHidden: UIViewController? {
         children.last
     }
     #endif
@@ -482,22 +477,6 @@ open class StateViewController<State: Equatable>: UIViewController {
     public func contentViewControllerDidDisappear(_ child: UIViewController, animated: Bool) {
         return
     }
-
-    // MARK: - Animation
-
-    /// Returns an optional `StateViewControllerTransitionCoordinator`, used to animate transitions between
-    /// states.
-    ///
-    /// If the provided view controller conforms to `StateViewControllerTransitioning`, and this method returns
-    /// non-nil, the returned `StateViewControllerTransitionCoordinator` is used to animate the state transition
-    /// of the provided view controller.
-    ///
-    /// - Parameter child: Content view controller.
-    /// - Returns: A `StateViewControllerTransitionCoordinator`, or `nil`.
-    open func stateTransitionCoordinator(
-        for child: UIViewController) -> StateViewControllerTransitionCoordinator? {
-        return nil
-    }
 }
 
 fileprivate extension StateViewController {
@@ -571,7 +550,6 @@ fileprivate extension StateViewController {
 
         // Invoke callback method, indicating that we will change state
         willTransition(to: state, animated: animated)
-        dispatchStateEvent(.willTransitionTo(nextState: state, animated: animated))
 
         // Note that we're transitioning from a state
         transitioningFromState = state
@@ -663,7 +641,6 @@ fileprivate extension StateViewController {
         transitioningFromState = nil
 
         // Notify that we're finished transitioning
-        dispatchStateEvent(.didTransitionFrom(previousState: fromState, animated: animated))
         didTransition(from: fromState, animated: animated)
 
         // If we still need another state, let's transition to it immediately.
@@ -687,81 +664,41 @@ fileprivate extension StateViewController {
         isAppearing: Bool,
         completion: @escaping () -> Void) {
 
-        // Transitioning corodinator to use for the animation
-        let coordinator = stateTransitionCoordinator(for: viewController)
-
-        weak var cast = viewController as? StateViewControllerTransitioning
-
-        if let coordinator = coordinator {
-            coordinator.stateTransitionWillBegin(viewController: viewController, isAppearing: isAppearing)
-        } else if let cast = cast {
-            cast.stateTransitionWillBegin(isAppearing: isAppearing)
+        if let transitioningProtocol = viewController as? StateViewControllerTransitioning {
+            transitioningProtocol.stateTransitionWillBegin(isAppearing: isAppearing)
         } else {
-            defaultStateTransitionCoordinator?.stateTransitionWillBegin(
-                viewController: viewController,
-                isAppearing: isAppearing
-            )
+            viewController.view.alpha = isAppearing ? 0 : 1
         }
+
+        let transitioningProtocol = viewController as? StateViewControllerTransitioning
 
         // Set up an animation block
         let animations = {
             // Which performs the animations
-            if let coordinator = coordinator {
-                coordinator.animateAlongsideStateTransition(of: viewController, isAppearing: isAppearing)
-            } else if let cast = cast {
-                cast.animateAlongsideStateTransition(isAppearing: isAppearing)
-            } else {
-                defaultStateTransitionCoordinator?.animateAlongsideStateTransition(
-                    of: viewController,
-                    isAppearing: isAppearing
-                )
+            transitioningProtocol?.animateAlongsideStateTransition(isAppearing: isAppearing)
+
+            if transitioningProtocol == nil {
+                viewController.view.alpha = isAppearing ? 1 : 0
             }
         }
 
-        let duration: TimeInterval
-
-        if let coordinator = coordinator {
-            duration = coordinator.stateTransitionDuration(for: viewController, isAppearing: isAppearing)
-        } else {
-            duration = cast?.stateTransitionDuration(
-                isAppearing: isAppearing
-            ) ?? defaultStateTransitionCoordinator?.stateTransitionDuration(
-                for: viewController,
-                isAppearing: isAppearing
-            ) ?? 0
-        }
-
-        let delay: TimeInterval
-
-        if let coordinator = coordinator {
-            delay = coordinator.stateTransitionDelay(for: viewController, isAppearing: isAppearing)
-        } else {
-            delay = cast?.stateTransitionDelay(
-                isAppearing: isAppearing
-            ) ?? defaultStateTransitionCoordinator?.stateTransitionDelay(
-                for: viewController,
-                isAppearing: isAppearing
-            ) ?? 0
-        }
+        let duration = transitioningProtocol?.stateTransitionDuration(isAppearing: isAppearing) ?? 0.35
+        let delay = transitioningProtocol?.stateTransitionDelay(isAppearing: isAppearing) ?? 0
 
         // For iOS 10 and above, we use UIViewPropertyAnimator
         if #available(iOS 10, tvOS 10, *) {
-            let animator = UIViewPropertyAnimator(
-                duration: duration,
-                dampingRatio: 1,
-                animations: animations
-            )
+            let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1, animations: animations)
 
-            animator.addCompletion { _ in
-                if let coordinator = coordinator {
-                    coordinator.stateTransitionDidEnd(viewController: viewController, isAppearing: isAppearing)
-                } else if let cast = cast {
-                    cast.stateTransitionDidEnd(isAppearing: isAppearing)
-                } else {
-                    defaultStateTransitionCoordinator?.stateTransitionDidEnd(
-                        viewController: viewController,
-                        isAppearing: isAppearing
-                    )
+            animator.addCompletion { position in
+
+                guard position == .end else {
+                    return
+                }
+
+                transitioningProtocol?.stateTransitionDidEnd(isAppearing: isAppearing)
+
+                if transitioningProtocol == nil {
+                    viewController.view.alpha = isAppearing ? 1 : 0
                 }
 
                 completion()
@@ -776,8 +713,11 @@ fileprivate extension StateViewController {
                 usingSpringWithDamping: 1,
                 initialSpringVelocity: 0,
                 options: [],
-                animations: animations) { _ in
-                    completion()
+                animations: animations
+            ) { finished in
+                    if finished {
+                        completion()
+                    }
             }
         }
     }
@@ -804,8 +744,6 @@ fileprivate extension StateViewController {
             return
         }
 
-        dispatchStateEvent(.didChangeHierarhcy)
-
         // Tell everyone we're updating the view hierarchy
         NotificationCenter.default.post(name: .stateViewControllerDidChangeViewHierarchy, object: self)
 
@@ -813,6 +751,7 @@ fileprivate extension StateViewController {
         // iOS 10 or below.
         triggerAutomaticAdjustmentOfScrollViewInsetsIfNeeded()
     }
+
     /// Prompts the encloding `UINavigationController` and `UITabBarController` to layout their subviews,
     /// triggering them to adjust the scrollview insets
     func triggerAutomaticAdjustmentOfScrollViewInsetsIfNeeded() {
@@ -830,7 +769,6 @@ fileprivate extension StateViewController {
         navigationController?.view.setNeedsLayout()
         tabBarController?.view.setNeedsLayout()
     }
-
 }
 
 fileprivate extension StateViewController {
@@ -852,7 +790,6 @@ fileprivate extension StateViewController {
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
             childWillAppear(child, animated: animated)
-            dispatchStateEvent(.contentWillAppear(child))
             child.beginAppearanceTransition(true, animated: animated)
         }
 
@@ -868,7 +805,6 @@ fileprivate extension StateViewController {
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
-            dispatchStateEvent(.contentDidAppear(child))
             child.endAppearanceTransition()
             childDidAppear(child, animated: animated)
         }
@@ -889,7 +825,6 @@ fileprivate extension StateViewController {
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
             childWillDisappear(child, animated: animated)
-            dispatchStateEvent(.contentWillDisappear(child))
             child.beginAppearanceTransition(false, animated: animated)
         }
 
@@ -908,37 +843,11 @@ fileprivate extension StateViewController {
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
         if isInAppearanceTransition == false {
-            dispatchStateEvent(.contentDidDisappear(child))
             child.endAppearanceTransition()
             childDidDisappear(child, animated: animated)
         }
 
         child.removeFromParent()
         viewControllersBeingRemoved.remove(child)
-    }
-}
-
-public extension StateViewController {
-    func addStateObserver(
-        _ eventHandler: @escaping StateViewControllerObserver<State>.EventHandler
-    ) -> StateViewControllerObserver<State> {
-
-        let observer = StateViewControllerObserver(stateViewController: self, eventHandler: eventHandler)
-
-        observers.append(observer)
-
-        return observer
-    }
-
-    func removeStateObserver(_ observerToRemove: StateViewControllerObserver<State>) {
-        observers = observers.filter { observer in
-            observer != observerToRemove
-        }
-    }
-
-    fileprivate func dispatchStateEvent(_ event: StateViewControllerObserver<State>.Event) {
-        for observer in observers {
-            observer.invoke(with: event)
-        }
     }
 }

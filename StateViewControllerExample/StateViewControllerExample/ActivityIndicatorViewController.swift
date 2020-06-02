@@ -11,7 +11,14 @@ import UIKit
 
 class ActivityIndicatorViewController: UIViewController {
 
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+
+    @IBOutlet private var activityIndicatorContainer: UIView!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        activityIndicatorContainer.layer.cornerRadius = 5
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -35,22 +42,26 @@ extension ActivityIndicatorViewController: StateViewControllerTransitioning {
     func stateTransitionWillBegin(isAppearing: Bool) {
         if isAppearing {
             view.alpha = 0
-            activityIndicator.transform = CGAffineTransform.identity.scaledBy(x: 3, y: 3)
+            activityIndicatorContainer.transform = CGAffineTransform
+                .identity
+                .scaledBy(x: 0.5, y: 0.5)
         }
     }
 
     func stateTransitionDidEnd(isAppearing: Bool) {
         view.alpha = 1
-        activityIndicator.transform = .identity
+        activityIndicatorContainer.transform = .identity
     }
 
     func animateAlongsideStateTransition(isAppearing: Bool) {
         if isAppearing {
             view.alpha = 1
-            activityIndicator.transform = .identity
+            activityIndicatorContainer.transform = .identity
         } else {
             view.alpha = 0
-            activityIndicator.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
+            activityIndicatorContainer.transform = CGAffineTransform
+                .identity
+                .scaledBy(x: 1.5, y: 1.5)
         }
     }
 

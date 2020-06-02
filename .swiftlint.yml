@@ -1,18 +1,33 @@
 excluded:
   - Carthage
-  - Example
-  - StateViewControllerExample
 
 file_length:
-  warning: 1000
-  error: 1200
+  ignore_comment_only_lines: true
 
 identifier_name:
-  max_length: 50
+  min_length: 2
+  validates_start_with_lowercase: false
+  allowed_symbols:
+    - "_"
+
+line_length:
+  ignores_comments: true
 
 type_name:
-  max_length: 50
+  min_length: 2
 
+disabled_rules:
+  - identifier_name
+
+nesting:
+  type_level:
+    warning: 3
+  statement_level:
+    warning: 10
+
+analyzer_rules:
+  - unused_declaration
+  - unused_import
 opt_in_rules:
   - anyobject_protocol
   - array_init
@@ -20,7 +35,10 @@ opt_in_rules:
   - closure_end_indentation
   - closure_spacing
   - collection_alignment
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
   - contains_over_first_not_nil
+  - discouraged_object_literal
   - empty_count
   - empty_string
   - empty_xctest_method
@@ -28,34 +46,45 @@ opt_in_rules:
   - extension_access_modifier
   - fallthrough
   - fatal_error_message
-  - file_header
   - file_name
   - first_where
+  - flatmap_over_map_reduce
   - identical_operands
   - joined_default_parameter
+  - legacy_random
   - let_var_whitespace
+  - last_where
   - literal_expression_end_indentation
   - lower_acl_than_parent
+  - modifier_order
   - nimble_operator
+  - nslocalizedstring_key
   - number_separator
+  - object_literal
   - operator_usage_whitespace
   - overridden_super_call
   - override_in_extension
   - pattern_matching_keywords
   - private_action
   - private_outlet
-  - prohibited_interface_builder
   - prohibited_super_call
   - quick_discouraged_call
   - quick_discouraged_focused_test
   - quick_discouraged_pending_test
+  - reduce_into
   - redundant_nil_coalescing
   - redundant_type_annotation
   - single_test_class
   - sorted_first_last
   - sorted_imports
+  - static_operator
+  - strong_iboutlet
+  - toggle_bool
   - unavailable_function
   - unneeded_parentheses_in_closure_argument
+  - unowned_variable_capture
   - untyped_error_in_catch
   - vertical_parameter_alignment_on_call
+  - vertical_whitespace_closing_braces
+  - xct_specific_matcher
   - yoda_condition

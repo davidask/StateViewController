@@ -1,26 +1,30 @@
 ![Build](https://github.com/formbound/StateViewController/workflows/Build/badge.svg)
 # StateViewController
 
-When creating rich stateful view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often inferred from multiple properties that need to be synchronized to correctly represent a single state. Usually the end result is known as the *Massive View Controller* problem, often solved by deviating from the [MVC](https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html) pattern used and endorsed heavily by Apple. While other patterns, such as [MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel) or [MVP](https://en.wikipedia.org/wiki/Model–view–presenter), can solve your issues, going with the grain rather than against makes interacting with UIKit a whole lot easier. *This repository houses one dependency-free class, called `StateViewController`, which is tasked with solving this issue.*
+When creating rich view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often derived from multiple sources that need to be synchronized to correctly represent a single reliable state. Usually the end result is known as the *Massive View Controller* problem, often solved by attempts to abandon the [MVC](https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html) pattern, the primary design pattern in UIKit. While other patterns, such as [MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel) or [MVP](https://en.wikipedia.org/wiki/Model–view–presenter), can solve some issues, going with the grain rather than against makes interacting with UIKit more accomodating. 
 
-### Supported Platforms
+This repository houses a `UIViewController` subclass, enabling modularization and decoupling of view controllers, reducing the size of individual view controllers substantially, without the need for abandoning MVC as a design pattern.
 
-* iOS 8.0 or later
-* tvOS 9.0 or later
+
+
+## Requirements
+
+* iOS 8.0+
+* tvOS 9.0+
 
 ## Overview
 `StateViewController` is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each child view controller, making sure that the view life cycle of the child view controllers are intact and in order, notifying you about state transitions and which child view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/state_transition.png" width="512" />  
-</p>
-
-
 The state view controller helps you manage child view controllers representing different states. In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.
 
+
+
 <p align="center">
-  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/lifecycle.png" width="512" />  
+  <img src="Images/state_transition.png" />  
 </p>
+*StateViewController coordinates state transition with view controller lifecycles*
+
+
 
 ## Documentation
 
@@ -38,6 +42,8 @@ github "formbound/StateViewController"
 ```swift
 import StateViewController
 ```
+
+### Subclassing StateViewController
 
 To use `StateViewController` you must override it. The class is generic with a subtype of `State` which must conform to `Equatable`. The state type can be designed to house the actual model data required by your view controller, but that's an optional design decision. For instance, you can create a state that simply determines an abstract state:
 
@@ -121,7 +127,29 @@ override func didTransition(from previousState: State?, animated: Bool) {
 }
 ```
 
-Your `StateViewController` is now ready, and will switch between view controllers depending on state.
+Your `StateViewController` is now ready, and will switch between view controllers depending on state. Using `setNeedsTransition(:to:animated:)` you can transition between various states during the life cycle of your state view controller subclass.
 
 Multiple other callbacks are available for determining when a child view controller is appearing or disappearing. Please reference the documentation or the [Example](/Example).
 
+
+
+### Providing transitions between child view controllers
+
+Child view controllers of `StateViewController` conforming to the [`StateViewControllerTransitioning`](Sources/StateViewController/StateViewControllerTransitioning.swift) protocol can individually control their own transition. The available methods provide funtionality for:
+
+- Specifying duration and delayed start of an animated transition
+- Preparing the view controller for presentation
+- Performing animations along side an animated transition
+- Performing operations after a transition
+
+
+
+## Contribute
+
+Please feel welcome contributing to **StateViewController**, check the ``LICENSE`` file for more info.
+
+
+
+## Credits
+
+David Ask

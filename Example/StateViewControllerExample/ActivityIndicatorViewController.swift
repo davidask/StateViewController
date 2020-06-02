@@ -11,9 +11,9 @@ import UIKit
 
 class ActivityIndicatorViewController: UIViewController {
 
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
-    @IBOutlet var activityIndicatorBackground: UIView!
+    @IBOutlet private var activityIndicatorBackground: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()

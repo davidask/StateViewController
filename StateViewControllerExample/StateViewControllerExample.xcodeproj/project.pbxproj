@@ -34,6 +34,13 @@
 			remoteGlobalIDString = B76AA3B6212052B500020277;
 			remoteInfo = "StateViewController iOS";
 		};
+		B7F94346248531AB00CE9D92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B77C0EFD2125ED5800E88C7E /* StateViewController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B72B725424181455007B7C10;
+			remoteInfo = "StateViewController tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				B77C0F022125ED5800E88C7E /* StateViewController.framework */,
+				B7F94347248531AB00CE9D92 /* StateViewController.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -151,6 +159,7 @@
 				TargetAttributes = {
 					B77C0EE72125ED3700E88C7E = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1150;
 					};
 				};
 			};
@@ -184,6 +193,13 @@
 			fileType = wrapper.framework;
 			path = StateViewController.framework;
 			remoteRef = B77C0F012125ED5800E88C7E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B7F94347248531AB00CE9D92 /* StateViewController.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = StateViewController.framework;
+			remoteRef = B7F94346248531AB00CE9D92 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -372,7 +388,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.formbound.StateViewControllerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -391,7 +407,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.formbound.StateViewControllerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -32,7 +32,7 @@ class ListStateViewController: StateViewController<ListStateViewControllerState>
         super.viewDidLoad()
     }
 
-    lazy private var tableViewController: TableViewController = {
+    private lazy var tableViewController: TableViewController = {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         // swiftlint:disable force_cast
         return storyboard.instantiateViewController(withIdentifier: "tableViewController") as! TableViewController
@@ -43,13 +43,14 @@ class ListStateViewController: StateViewController<ListStateViewControllerState>
         return .loading
     }
 
-    override func contentViewControllers(for state: ListStateViewControllerState) -> [UIViewController] {
+    override func children(for state: ListStateViewControllerState) -> [UIViewController] {
         switch state {
         case .loading:
 
             let storyboard = UIStoryboard(name: "Main", bundle: .main)
 
             return [
+                tableViewController,
                 storyboard.instantiateViewController(withIdentifier: "activityIndicatorController")
             ]
         case .ready:
@@ -90,5 +91,4 @@ class ListStateViewController: StateViewController<ListStateViewControllerState>
     func refresh() {
         self.setNeedsStateTransition(to: .loading, animated: true)
     }
-
 }
