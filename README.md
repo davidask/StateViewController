@@ -20,7 +20,7 @@ The state view controller helps you manage child view controllers representing d
 
 
 <p align="center">
-  <img src="Images/state_transition.png" />  
+  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/state_transition-2.png" />  
 </p>
 
 
