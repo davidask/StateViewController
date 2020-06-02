@@ -83,7 +83,7 @@
         <section class="section">
           <div class="section-content top-matter">
             
-            <p><img src="https://github.com/formbound/StateViewController/workflows/Build/badge.svg" alt="Build"></p>
+            <p><img src="https://github.com/davidask/StateViewController/workflows/Build/badge.svg" alt="Build"></p>
 <h1 id='stateviewcontroller' class='heading'>StateViewController</h1>
 
 <p>When creating rich view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often derived from multiple sources that need to be synchronized to correctly represent a single reliable state. Usually the end result is known as the <em>Massive View Controller</em> problem, often solved by attempts to abandon the <a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html">MVC</a> pattern, the primary design pattern in UIKit. While other patterns, such as <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel">MVVM</a> or <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter">MVP</a>, can solve some issues, going with the grain rather than against makes interacting with UIKit more accomodating. </p>
@@ -102,15 +102,15 @@
 <p>The state view controller helps you manage child view controllers representing different states. In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.</p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/state_transition-2.png" />  
+  <img src="https://raw.githubusercontent.com/davidask/StateViewController/master/Images/state_transition-2.png" />  
 </p>
 <h2 id='documentation' class='heading'>Documentation</h2>
 
-<p>The source code documentation can be found <a href="https://formbound.github.io/StateViewController/">here</a>.</p>
+<p>The source code documentation can be found <a href="https://davidask.github.io/StateViewController/">here</a>.</p>
 <h2 id='installation' class='heading'>Installation</h2>
 
 <p>This module is available via <a href="https://github.com/Carthage/Carthage">Carthage</a>. Modify your <a href="https://github.com/Carthage/Carthage#quick-start">Cartfile</a> to include <code><a href="Classes/StateViewController.html">StateViewController</a></code>:</p>
-<pre class="highlight plaintext"><code>github "formbound/StateViewController"
+<pre class="highlight plaintext"><code>github "davidask/StateViewController"
 </code></pre>
 <h2 id='usage' class='heading'>Usage</h2>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">StateViewController</span>

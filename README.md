@@ -1,4 +1,4 @@
-![Build](https://github.com/formbound/StateViewController/workflows/Build/badge.svg)
+![Build](https://github.com/davidask/StateViewController/workflows/Build/badge.svg)
 # StateViewController
 
 When creating rich view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often derived from multiple sources that need to be synchronized to correctly represent a single reliable state. Usually the end result is known as the *Massive View Controller* problem, often solved by attempts to abandon the [MVC](https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html) pattern, the primary design pattern in UIKit. While other patterns, such as [MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel) or [MVP](https://en.wikipedia.org/wiki/Model–view–presenter), can solve some issues, going with the grain rather than against makes interacting with UIKit more accomodating. 
@@ -20,19 +20,19 @@ The state view controller helps you manage child view controllers representing d
 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/formbound/StateViewController/master/Images/state_transition-2.png" />  
+  <img src="https://raw.githubusercontent.com/davidask/StateViewController/master/Images/state_transition-2.png" />  
 </p>
 
 
 ## Documentation
 
-The source code documentation can be found [here](https://formbound.github.io/StateViewController/).
+The source code documentation can be found [here](https://davidask.github.io/StateViewController/).
 
 ## Installation
 This module is available via [Carthage](https://github.com/Carthage/Carthage). Modify your [Cartfile](https://github.com/Carthage/Carthage#quick-start) to include `StateViewController`:
 
 ```
-github "formbound/StateViewController"
+github "davidask/StateViewController"
 ```
 
 ## Usage
