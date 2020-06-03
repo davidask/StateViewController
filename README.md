@@ -26,7 +26,7 @@ If the appearance transition is animated, the state transition animation is resp
 
 ![During appearance cycle](https://raw.githubusercontent.com/davidask/StateViewController/master/images/during-lifecycle.png "StateViewController during appearance cycles")
 
-### State transitions between appearance cycles
+### State transitions while on screen
 
 When on-screen, invoking `setNeedsTransition:to:` will trigger a transition from the current state to the target state. A common practice is to have the transition from one state to another to trigger an an asynchronous operation (such as a network call), which upon completion, requests a third state based on the success of the asynchronous operation.
 
