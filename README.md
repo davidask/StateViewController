@@ -1,7 +1,7 @@
 ![Build](https://github.com/davidask/StateViewController/workflows/Build/badge.svg)
 # StateViewController
 
-When creating rich view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often derived from multiple sources that need to be synchronized to correctly represent a single reliable state. Usually the end result is known as the *Massive View Controller* problem, often solved by attempts to abandon the [MVC](https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html) pattern, the primary design pattern in UIKit. While other patterns, such as [MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel) or [MVP](https://en.wikipedia.org/wiki/Model–view–presenter), can solve some issues, going with the grain rather than against makes interacting with UIKit more accomodating. 
+When creating rich view controllers, a single view controller class is often tasked with managing the appearance of many other views, controls, and other user interface elements based on a state. That state, in turn, is often derived from multiple sources that need to be synchronized to correctly represent a single reliable state. Usually the end result is known as the *Massive View Controller* problem, often solved by attempts to abandon the [MVC](https://developer.apple.com/library/archive/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html) pattern, the primary design pattern in UIKit. While other patterns, such as [MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel) or [MVP](https://en.wikipedia.org/wiki/Model–view–presenter), can solve some issues, going with the grain rather than against makes interacting with UIKit more accommodating. 
 
 This repository houses a `UIViewController` subclass, enabling modularization and decoupling of view controllers, reducing the size of individual view controllers substantially, without the need for abandoning MVC as a design pattern.
 
@@ -13,16 +13,24 @@ This repository houses a `UIViewController` subclass, enabling modularization an
 * tvOS 9.0+
 
 ## Overview
-`StateViewController` is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each child view controller, making sure that the view life cycle of the child view controllers are intact and in order, notifying you about state transitions and which child view controllers are about to appear or disappear from the view hierarchy. This allos you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
+`StateViewController` is a container view controller that presents one or more view controllers for any given state that you define, such as `loading`, `list`, or `editing`. It manages the appearance cycles of each child view controller, making sure that the view life cycle of the child view controllers are intact and in order, notifying you about state transitions and which child view controllers are about to appear or disappear from the view hierarchy. This allows you to compose multiple view controllers and re-use them throughout the app. The state view controller also provides extensive support for animating the transition between states.
 
-The state view controller helps you manage child view controllers representing different states. In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.
+Which view controller(s) are visible on screen is dictated by `children(for:)`. 
+
+### State transitions during appearance transition
+When presented on screen, the a state view controller requires an initial state as a starting point. During its appearance transition, the `loadAppearanceState()` method is invoked to query the state appropriate to transition to as the state view controller appears on screen.
+If the appearance transition is animated, the state transition animation is respected, and target child view controllers have the option to appear asynchronously. If the appearance transition is not animated, all child view controllers are immediately placed on screen.
+
+`loadAppearanceState()` must execute synchronously, and is a good place to query any persistence layer for available data, determining whether a final state is ready.
 
 
+![During appearance cycle](https://raw.githubusercontent.com/davidask/StateViewController/master/images/during-lifecycle.png "StateViewController during appearance cycles")
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/davidask/StateViewController/master/Images/state_transition-2.png" />  
-</p>
+### State transitions between appearance cycles
 
+When on-screen, invoking `setNeedsTransition:to:` will trigger a transition from the current state to the target state. A common practice is to have the transition from one state to another to trigger an an asynchronous operation (such as a network call), which upon completion, requests a third state based on the success of the asynchronous operation.
+
+![Between appearance cycle](https://raw.githubusercontent.com/davidask/StateViewController/master/images/between-lifecycle.png "StateViewController between appearance cycles")
 
 ## Documentation
 
@@ -130,10 +138,9 @@ Your `StateViewController` is now ready, and will switch between view controller
 Multiple other callbacks are available for determining when a child view controller is appearing or disappearing. Please reference the documentation or the [Example](/Example).
 
 
-
 ### Providing transitions between child view controllers
 
-Child view controllers of `StateViewController` conforming to the [`StateViewControllerTransitioning`](Sources/StateViewController/StateViewControllerTransitioning.swift) protocol can individually control their own transition. The available methods provide funtionality for:
+Child view controllers of `StateViewController` conforming to the [`StateViewControllerTransitioning`](Sources/StateViewController/StateViewControllerTransitioning.swift) protocol can individually control their own transition. The available methods provide functionality for:
 
 - Specifying duration and delayed start of an animated transition
 - Preparing the view controller for presentation
@@ -141,12 +148,13 @@ Child view controllers of `StateViewController` conforming to the [`StateViewCon
 - Performing operations after a transition
 
 
+## Example
+
+In the example application included in this project the state view controller switches between two view controllers. Firstly, it displays and animates the transition of an activity indicator view controller while a network call is being performed. Once the network call is successfully completed it transitions into a state displaying a table view with the loaded content.
 
 ## Contribute
 
 Please feel welcome contributing to **StateViewController**, check the ``LICENSE`` file for more info.
-
-
 
 ## Credits
 
