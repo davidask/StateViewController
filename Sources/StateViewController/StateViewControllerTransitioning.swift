@@ -1,3 +1,5 @@
+#if canImport(UIKit)
+
 import UIKit
 
 /// View controllers can conform to this protocol to provide their desired
@@ -31,3 +33,5 @@ public protocol StateViewControllerTransitioning: AnyObject {
     /// - Returns: A transition duration.
     func stateTransitionDelay(isAppearing: Bool) -> TimeInterval
 }
+
+#endif

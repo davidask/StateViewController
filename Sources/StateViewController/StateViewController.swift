@@ -1,3 +1,5 @@
+#if canImport(UIKit)
+
 import UIKit
 
 public extension Notification.Name {
@@ -851,3 +853,5 @@ fileprivate extension StateViewController {
         viewControllersBeingRemoved.remove(child)
     }
 }
+
+#endif
