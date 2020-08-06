@@ -26,7 +26,7 @@ public extension Notification.Name {
 ///
 /// You must subclass `StateViewController` and define a state for the view controller you are creating.
 /// ```
-/// enum MyViewControllerState: Equatable {
+/// enum MyViewControllerState {
 ///     case loading
 ///     case ready
 /// }
@@ -105,7 +105,7 @@ public extension Notification.Name {
 /// - Set `defaultStateTransitioningCoordinator`
 /// - Override `stateTransitionCoordinator(for:)` in your `StateViewController` subclasses
 /// - Conform view controllers contained in `StateViewController` to `StateViewControllerTransitioning`.
-open class StateViewController<State: Equatable>: UIViewController {
+open class StateViewController<State>: UIViewController {
 
     /// Current state storage
     fileprivate var stateInternal: State?
@@ -158,14 +158,10 @@ open class StateViewController<State: Equatable>: UIViewController {
         // Load the appearance state once
         let appearanceState = loadAppearanceState()
 
-        // If the required appearance state does not match the current state, begin applying appearance state.
-        if stateInternal != appearanceState {
-            // Note that we're applying the appearance state for this appearance cycle.
-            if isMovingToParent {
-                setNeedsStateTransition(to: appearanceState, animated: animated)
-            } else {
-                isApplyingAppearanceState = beginStateTransition(to: appearanceState, animated: animated)
-            }
+        if isMovingToParent {
+            setNeedsStateTransition(to: appearanceState, animated: animated)
+        } else {
+            isApplyingAppearanceState = beginStateTransition(to: appearanceState, animated: animated)
         }
 
         // Prematurely remove view controllers that are being removed.
@@ -531,11 +527,6 @@ fileprivate extension StateViewController {
 
     @discardableResult
     func beginStateTransition(to state: State, animated: Bool) -> Bool {
-
-        // If we're not changing the state, what's the point?
-        guard state != stateInternal else {
-            return false
-        }
 
         // We may not have made any changes to content view controllers, even though we have changed the state.
         // Therefore, we must be prepare to end the state transition immediately.

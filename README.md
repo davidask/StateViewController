@@ -51,10 +51,10 @@ import StateViewController
 
 ### Subclassing StateViewController
 
-To use `StateViewController` you must override it. The class is generic with a subtype of `State` which must conform to `Equatable`. The state type can be designed to house the actual model data required by your view controller, but that's an optional design decision. For instance, you can create a state that simply determines an abstract state:
+To use `StateViewController` you must override it. The class specifies a generic with a subtype of `State`. The state type can be designed to house the actual model data required by your view controller, but that's an optional design decision. For instance, you can create a state that simply determines an abstract state:
 
 ```swift
-enum MyState: Equatable {
+enum MyState {
     case loading
     case ready
     case error
@@ -63,7 +63,7 @@ enum MyState: Equatable {
 
 Or, you can define a state which in itself contains model data:
 ```swift
-enum MyState: Equatable {
+enum MyState {
     case loading
     case ready(MyModel)
     case error(Error)
