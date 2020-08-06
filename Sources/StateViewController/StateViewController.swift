@@ -2,13 +2,6 @@
 
 import UIKit
 
-public extension Notification.Name {
-    /// Notification name that fires when a state view controller updates its view hierarchy
-    static let stateViewControllerDidChangeViewHierarchy = Notification.Name(
-        "stateViewControllerDidChangeViewHierarchy"
-    )
-}
-
 /// A container view controller that manages the appearance of one or more child view controller for any given state.
 ///
 /// ## Overview
@@ -729,6 +722,7 @@ fileprivate extension StateViewController {
             viewController.view.center = childContainerView.center
 
             childContainerView.insertSubview(viewController.view, at: index)
+            viewController.view.layoutIfNeeded()
         }
 
         // Only proceed if the previous subviews of the content view controller container view
@@ -736,9 +730,6 @@ fileprivate extension StateViewController {
         guard previousSubviews.elementsEqual(childContainerView.subviews) == false else {
             return
         }
-
-        // Tell everyone we're updating the view hierarchy
-        NotificationCenter.default.post(name: .stateViewControllerDidChangeViewHierarchy, object: self)
 
         // Make sure that contentInsets for scroll views are updated as we go, in case we're targeting
         // iOS 10 or below.
@@ -831,7 +822,6 @@ fileprivate extension StateViewController {
         }
 
         child.view.removeFromSuperview()
-        NotificationCenter.default.post(name: .stateViewControllerDidChangeViewHierarchy, object: self)
 
         // If we're not in an appearance transition, forward appearance methods.
         // If we are, appearance methods will be forwarded at a later time
