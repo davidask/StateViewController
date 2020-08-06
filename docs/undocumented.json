@@ -1,19 +1,6 @@
 {
   "warnings": [
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewController/StateViewController.swift",
-      "line": 285,
-      "symbol": "StateViewController.hasDeterminedState",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/davidask/Github/formbound/StateViewController/Sources/StateViewController/StateViewController.swift",
-      "line": 297,
-      "symbol": "StateViewController.loadAppearanceState()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    }
+
   ],
-  "source_directory": "/Users/davidask/Github/formbound/StateViewController"
+  "source_directory": "/Users/davidask/Github/davidask/StateViewController"
 }
