@@ -13,11 +13,11 @@ class ActivityIndicatorViewController: UIViewController {
 
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
-    @IBOutlet private var activityIndicatorBackground: UIView!
+    @IBOutlet private var activityIndicatorContainer: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        activityIndicatorBackground.layer.cornerRadius = 10
+        activityIndicatorContainer.layer.cornerRadius = 5
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -42,30 +42,30 @@ extension ActivityIndicatorViewController: StateViewControllerTransitioning {
     func stateTransitionWillBegin(isAppearing: Bool) {
         if isAppearing {
             view.alpha = 0
-            activityIndicator.transform = CGAffineTransform.identity.scaledBy(x: 3, y: 3)
-            activityIndicatorBackground.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
+            activityIndicatorContainer.transform = CGAffineTransform
+                .identity
+                .scaledBy(x: 0.5, y: 0.5)
         }
     }
 
     func stateTransitionDidEnd(isAppearing: Bool) {
         view.alpha = 1
-        activityIndicator.transform = .identity
-        activityIndicatorBackground.transform = .identity
+        activityIndicatorContainer.transform = .identity
     }
 
     func animateAlongsideStateTransition(isAppearing: Bool) {
         if isAppearing {
             view.alpha = 1
-            activityIndicator.transform = .identity
-            activityIndicatorBackground.transform = .identity
+            activityIndicatorContainer.transform = .identity
         } else {
             view.alpha = 0
-            activityIndicator.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
-            activityIndicatorBackground.transform = CGAffineTransform.identity.scaledBy(x: 1.25, y: 1.25)
+            activityIndicatorContainer.transform = CGAffineTransform
+                .identity
+                .scaledBy(x: 1.5, y: 1.5)
         }
     }
 
     func stateTransitionDelay(isAppearing: Bool) -> TimeInterval {
-        return isAppearing ? 0 : 0.25
+        return isAppearing ? 0 : 0.5
     }
 }

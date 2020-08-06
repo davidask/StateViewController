@@ -7,43 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B76FCF8D24DBECFE0014697B /* StateViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76FCF8B24DBECFA0014697B /* StateViewController.framework */; };
+		B76FCF8E24DBECFE0014697B /* StateViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B76FCF8B24DBECFA0014697B /* StateViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B77C0EEC2125ED3700E88C7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C0EEB2125ED3700E88C7E /* AppDelegate.swift */; };
 		B77C0EEE2125ED3700E88C7E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C0EED2125ED3700E88C7E /* TableViewController.swift */; };
 		B77C0EF12125ED3800E88C7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B77C0EEF2125ED3800E88C7E /* Main.storyboard */; };
 		B77C0EF32125ED3900E88C7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B77C0EF22125ED3900E88C7E /* Assets.xcassets */; };
 		B77C0EF62125ED3900E88C7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B77C0EF42125ED3900E88C7E /* LaunchScreen.storyboard */; };
-		B77C0F052125EE1A00E88C7E /* StateViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77C0F022125ED5800E88C7E /* StateViewController.framework */; };
-		B77C0F062125EE1A00E88C7E /* StateViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B77C0F022125ED5800E88C7E /* StateViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B77C0F0C2125EF4000E88C7E /* ListStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C0F0B2125EF4000E88C7E /* ListStateViewController.swift */; };
 		B77C0F0E2125EFC300E88C7E /* ActivityIndicatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C0F0D2125EFC300E88C7E /* ActivityIndicatorViewController.swift */; };
 		B77C0F102125F14400E88C7E /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C0F0F2125F14400E88C7E /* Comment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		B77C0F012125ED5800E88C7E /* PBXContainerItemProxy */ = {
+		B76FCF8A24DBECFA0014697B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B77C0EFD2125ED5800E88C7E /* StateViewController.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = B76AA3B7212052B500020277;
-			remoteInfo = "StateViewController iOS";
-		};
-		B77C0F072125EE1A00E88C7E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B77C0EFD2125ED5800E88C7E /* StateViewController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = B76AA3B6212052B500020277;
-			remoteInfo = "StateViewController iOS";
+			remoteGlobalIDString = "StateViewController::StateViewController::Product";
+			remoteInfo = StateViewController;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B77C0F092125EE1A00E88C7E /* Embed Frameworks */ = {
+		B76FCF8F24DBECFE0014697B /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B77C0F062125EE1A00E88C7E /* StateViewController.framework in Embed Frameworks */,
+				B76FCF8E24DBECFE0014697B /* StateViewController.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,19 +62,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B77C0F052125EE1A00E88C7E /* StateViewController.framework in Frameworks */,
+				B76FCF8D24DBECFE0014697B /* StateViewController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B76FCF8C24DBECFE0014697B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B77C0EDF2125ED3700E88C7E = {
 			isa = PBXGroup;
 			children = (
 				B77C0EFD2125ED5800E88C7E /* StateViewController.xcodeproj */,
 				B77C0EEA2125ED3700E88C7E /* StateViewControllerExample */,
 				B77C0EE92125ED3700E88C7E /* Products */,
+				B76FCF8C24DBECFE0014697B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,7 +113,7 @@
 		B77C0EFE2125ED5800E88C7E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B77C0F022125ED5800E88C7E /* StateViewController.framework */,
+				B76FCF8B24DBECFA0014697B /* StateViewController.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -127,12 +128,11 @@
 				B77C0EE42125ED3700E88C7E /* Sources */,
 				B77C0EE52125ED3700E88C7E /* Frameworks */,
 				B77C0EE62125ED3700E88C7E /* Resources */,
-				B77C0F092125EE1A00E88C7E /* Embed Frameworks */,
+				B76FCF8F24DBECFE0014697B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				B77C0F082125EE1A00E88C7E /* PBXTargetDependency */,
 			);
 			name = StateViewControllerExample;
 			productName = StateViewControllerExample;
@@ -151,6 +151,7 @@
 				TargetAttributes = {
 					B77C0EE72125ED3700E88C7E = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1150;
 					};
 				};
 			};
@@ -179,11 +180,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		B77C0F022125ED5800E88C7E /* StateViewController.framework */ = {
+		B76FCF8B24DBECFA0014697B /* StateViewController.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = StateViewController.framework;
-			remoteRef = B77C0F012125ED5800E88C7E /* PBXContainerItemProxy */;
+			remoteRef = B76FCF8A24DBECFA0014697B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -215,14 +216,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B77C0F082125EE1A00E88C7E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "StateViewController iOS";
-			targetProxy = B77C0F072125EE1A00E88C7E /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B77C0EEF2125ED3800E88C7E /* Main.storyboard */ = {
@@ -361,40 +354,36 @@
 		B77C0EFB2125ED3900E88C7E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = StateViewControllerExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.formbound.StateViewControllerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		B77C0EFC2125ED3900E88C7E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = StateViewControllerExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.formbound.StateViewControllerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

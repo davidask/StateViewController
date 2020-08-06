@@ -45,36 +45,37 @@ class TableViewController: UITableViewController {
         cell.detailTextLabel?.text = comment.body
     }
 }
-
-extension TableViewController: StateViewControllerTransitioning {
-
-    func stateTransitionDuration(isAppearing: Bool) -> TimeInterval {
-        return 0.25
-    }
-
-    func stateTransitionWillBegin(isAppearing: Bool) {
-        if isAppearing {
-            view.alpha = 0
-            view.transform = CGAffineTransform.identity.scaledBy(x: 0.95, y: 0.95)
-        }
-    }
-
-    func stateTransitionDidEnd(isAppearing: Bool) {
-        view.alpha = 1
-        view.transform = .identity
-    }
-
-    func animateAlongsideStateTransition(isAppearing: Bool) {
-        if isAppearing {
-            view.alpha = 1
-            view.transform = .identity
-        } else {
-            view.alpha = 0
-            view.transform = CGAffineTransform.identity.scaledBy(x: 0.95, y: 0.95)
-        }
-    }
-
-    func stateTransitionDelay(isAppearing: Bool) -> TimeInterval {
-        return 0
-    }
-}
+//
+//
+//extension TableViewController: StateViewControllerTransitioning {
+//
+//    func stateTransitionDuration(isAppearing: Bool) -> TimeInterval {
+//        return 0.25
+//    }
+//
+//    func stateTransitionWillBegin(isAppearing: Bool) {
+//        if isAppearing {
+//            view.alpha = 0
+//            view.transform = CGAffineTransform.identity.scaledBy(x: 0.95, y: 0.95)
+//        }
+//    }
+//
+//    func stateTransitionDidEnd(isAppearing: Bool) {
+//        view.alpha = 1
+//        view.transform = .identity
+//    }
+//
+//    func animateAlongsideStateTransition(isAppearing: Bool) {
+//        if isAppearing {
+//            view.alpha = 1
+//            view.transform = .identity
+//        } else {
+//            view.alpha = 0
+//            view.transform = CGAffineTransform.identity.scaledBy(x: 0.95, y: 0.95)
+//        }
+//    }
+//
+//    func stateTransitionDelay(isAppearing: Bool) -> TimeInterval {
+//        return 0
+//    }
+//}
