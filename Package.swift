@@ -16,6 +16,9 @@ let package = Package(
     targets: [
         .target(
             name: "StateViewController",
-            dependencies: [])
+            dependencies: []),
+        .testTarget(
+            name: "StateViewControllerTests",
+            dependencies: ["StateViewController"])
     ]
 )

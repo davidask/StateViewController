@@ -2,6 +2,8 @@
 
 import UIKit
 
+// swiftlint:disable file_length
+
 /// A container view controller that manages the appearance of one or more child view controller for any given state.
 ///
 /// ## Overview
@@ -111,17 +113,39 @@ open class StateViewController<State>: UIViewController {
     /// `viewDidAppear`, **or** between `viewWillDisappear` and `viewDidDisappear`.
     fileprivate var isInAppearanceTransition = false
 
+    /// Indicates whether the state view controller has appeared and has not yet disappeared.
+    fileprivate var isVisible = false
+
+    /// The direction of the current appearance transition, or `nil` outside an appearance transition.
+    fileprivate var appearanceTransitionIsAppearing: Bool?
+
     /// Indicates whether the state view controller is applying an appearance state, as part of its appearance cycle
     fileprivate var isApplyingAppearanceState = false
 
     /// Stores the next needed state to be transitioned to immediately after a current state transition is finished
     fileprivate var pendingState: (state: State, animated: Bool)?
 
+    /// Whether the active state transition is animated.
+    fileprivate var isStateTransitionAnimated = false
+
+    /// Used to determine whether `didTransition(from:animated:)` requested a newer state.
+    fileprivate var stateTransitionRequestGeneration: UInt = 0
+
+    /// Identifies animation completions belonging to the active transition.
+    fileprivate var activeStateTransitionGeneration: UInt = 0
+
     /// Set of child view controllers being added as part of a state transition
     fileprivate var viewControllersBeingAdded: Set<UIViewController> = []
 
     /// Set of child view controllers being removed as part of a state transition
     fileprivate var viewControllersBeingRemoved: Set<UIViewController> = []
+
+    /// Appearance transitions begun for child view controllers and awaiting a matching end.
+    fileprivate var childAppearanceTransitions: [UIViewController: (isAppearing: Bool, animated: Bool)] = [:]
+
+    /// Property animators for the active state transition, retained so lifecycle changes can stop them.
+    @available(iOS 10, tvOS 10, *)
+    fileprivate var stateTransitionAnimators: [UIViewController: UIViewPropertyAnimator] = [:]
 
     /// :nodoc:
     override public final var shouldAutomaticallyForwardAppearanceMethods: Bool {
@@ -143,10 +167,9 @@ open class StateViewController<State>: UIViewController {
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // When `viewWillAppear(animated:)` is called we do not yet connsider ourselves in an appearance transition
-        // internally because first we have to assert whether we are changing to an appearannce state.
         isApplyingAppearanceState = false
-        isInAppearanceTransition = false
+        appearanceTransitionIsAppearing = true
+        isInAppearanceTransition = true
 
         // Load the appearance state once
         let appearanceState = loadAppearanceState()
@@ -157,15 +180,10 @@ open class StateViewController<State>: UIViewController {
             isApplyingAppearanceState = beginStateTransition(to: appearanceState, animated: animated)
         }
 
-        // Prematurely remove view controllers that are being removed.
-        // As we're not yet setting the `isInAppearanceTransition` to `true`, the appearance methods
-        // for each child view controller below will be forwarded correctly.
-        for child in viewControllersBeingRemoved {
+        // Removed children cannot participate in the appearance transition that is about to begin.
+        for child in Array(viewControllersBeingRemoved) {
             removeChild(child, animated: false)
         }
-
-        // Note that we're in an appearance transition
-        isInAppearanceTransition = true
 
         // Forward begin appearance transitions to child view controllers.
         forwardBeginApperanceTransition(isAppearing: true, animated: animated)
@@ -177,20 +195,24 @@ open class StateViewController<State>: UIViewController {
 
         // Note that we're no longer in an appearance transition
         isInAppearanceTransition = false
+        isVisible = true
 
         // Forward end appearance transitions to chidl view controllers
-        forwardEndAppearanceTransition(didAppear: true, animated: animated)
+        forwardEndAppearanceTransition()
 
         // If we're applying the appearance state, finish up by making sure
         // `didMove(to:)` is called on child view controllers.
         if isApplyingAppearanceState {
-            for child in viewControllersBeingAdded {
+            for child in Array(viewControllersBeingAdded) {
                 didAddChild(child, animated: animated)
             }
         }
 
+        isApplyingAppearanceState = false
+        appearanceTransitionIsAppearing = nil
+
         // End state transition if needed. Child view controllers may still be in a transition.
-        endStateTransitionIfNeeded(animated: animated)
+        endStateTransitionIfNeeded()
     }
 
     /// :nodoc:
@@ -199,17 +221,15 @@ open class StateViewController<State>: UIViewController {
 
         isInAppearanceTransition = false
 
-        // If we're being dismissed we might as well clear the pending state.
-        pendingState = nil
+        // Reverse any outstanding appearance transitions before settling state-transition containment.
+        appearanceTransitionIsAppearing = false
+        isInAppearanceTransition = true
+        invalidateStateTransitionAnimations()
 
-        /// If there are view controllers being added as part of a current state transition, we should
-        // add them immediately.
-        for child in viewControllersBeingAdded {
+        // If there are view controllers being added as part of a current state transition, add them immediately.
+        for child in Array(viewControllersBeingAdded) {
             didAddChild(child, animated: animated)
         }
-
-        // Note that we're in an appearance transition
-        isInAppearanceTransition = true
 
         // Forward begin appearance methods
         forwardBeginApperanceTransition(isAppearing: false, animated: animated)
@@ -221,18 +241,23 @@ open class StateViewController<State>: UIViewController {
 
         // Note that we're no longer in an apperance transition
         isInAppearanceTransition = false
+        isVisible = false
 
-        // Prematurely remove all view controllers begin removed
-        for child in viewControllersBeingRemoved {
+        invalidateStateTransitionAnimations()
+
+        // Prematurely remove all view controllers being removed
+        for child in Array(viewControllersBeingRemoved) {
             removeChild(child, animated: animated)
         }
 
         // Forward end appearance transitions. Will only affect child view controllers not currently
         // in a state transition.
-        forwardEndAppearanceTransition(didAppear: false, animated: animated)
+        forwardEndAppearanceTransition()
+
+        appearanceTransitionIsAppearing = nil
 
         // End state transition if needed.
-        endStateTransitionIfNeeded(animated: animated)
+        endStateTransitionIfNeeded()
     }
 
     // MARK: - Container view controller forwarding
@@ -272,11 +297,12 @@ open class StateViewController<State>: UIViewController {
 
     /// Indicates whether the state of this view controller has been determined.
     /// In effect, this means that if this value is `true`, you can access `currentState` inside
-    // `loadAppearanceState()` without resulting in infinite recursion.
+    /// `loadAppearanceState()` without resulting in infinite recursion.
     public var hasDeterminedState: Bool {
         return stateInternal != nil
     }
 
+    // swiftlint:disable unavailable_function
     /// Loads a state that should represent this view controller immediately as this view controller
     /// is being presented on screen, and returns it.
     ///
@@ -284,7 +310,6 @@ open class StateViewController<State>: UIViewController {
     /// method without first asserting that `hasDeterminedState` is `true`.
     ///
     /// - Returns: A state
-    // swiftlint:disable unavailable_function
     open func loadAppearanceState() -> State {
         fatalError(
             "\(String(describing: self)) does not implement loadAppearanceState(), which is required. " +
@@ -304,22 +329,25 @@ open class StateViewController<State>: UIViewController {
     ///   - animated: Whether to animate the state transition.
     public func setNeedsStateTransition(to state: State, animated: Bool) {
 
+        stateTransitionRequestGeneration &+= 1
+
         guard beginStateTransition(to: state, animated: animated) else {
             return
         }
 
-        guard animated else {
-            for viewController in viewControllersBeingAdded {
+        if animated {
+            performStateTransition(animated: animated)
+        } else {
+            for viewController in Array(viewControllersBeingAdded) {
                 didAddChild(viewController, animated: animated)
             }
 
-            for viewController in viewControllersBeingRemoved {
+            for viewController in Array(viewControllersBeingRemoved) {
                 removeChild(viewController, animated: animated)
             }
-            return
         }
 
-        performStateTransition(animated: animated)
+        endStateTransitionIfNeeded()
     }
 
     // MARK: - Content view controllers
@@ -364,7 +392,7 @@ open class StateViewController<State>: UIViewController {
     }
 
     /// Creates the `childContainerView` used as a container view for content view controllers.
-    //
+    ///
     /// - Note: This method is only called once.
     ///
     /// - Returns: A `UIView` if not overridden.
@@ -480,38 +508,66 @@ fileprivate extension StateViewController {
     ///   - animated: Whether the appearance or disappearance of this view controller is animated
     func forwardBeginApperanceTransition(isAppearing: Bool, animated: Bool) {
 
-        // Don't include view controlellers in a state transition.
-        // Appearance method forwarding will be performed at a later stage
-        let excluded = viewControllersBeingAdded.union(viewControllersBeingRemoved)
+        // Removed view controllers cannot participate in the parent's appearance transition.
+        let excluded = viewControllersBeingRemoved
 
         for viewController in children where excluded.contains(viewController) == false {
 
             // Invoke the appropriate callback method
-            if isAppearing {
-                childWillAppear(viewController, animated: animated)
-            } else {
-                childWillDisappear(viewController, animated: animated)
-            }
-
-            viewController.beginAppearanceTransition(isAppearing, animated: animated)
+            beginChildAppearanceTransition(
+                for: viewController,
+                isAppearing: isAppearing,
+                animated: animated
+            )
         }
     }
 
-    func forwardEndAppearanceTransition(didAppear: Bool, animated: Bool) {
+    func forwardEndAppearanceTransition() {
 
-        // Don't include view controlellers in a state transition.
-        // Appearance method forwarding will be performed at a later stage.
-        let excluded = viewControllersBeingAdded.union(viewControllersBeingRemoved)
+        // Removed view controllers cannot participate in the parent's appearance transition.
+        let excluded = viewControllersBeingRemoved
 
         for viewController in children where excluded.contains(viewController) == false {
-            viewController.endAppearanceTransition()
+            endChildAppearanceTransition(for: viewController)
+        }
+    }
 
-            // Invoke the appropriate callback method
-            if didAppear {
-                childDidAppear(viewController, animated: animated)
-            } else {
-                childDidDisappear(viewController, animated: animated)
-            }
+    func beginChildAppearanceTransition(
+        for child: UIViewController,
+        isAppearing: Bool,
+        animated: Bool) {
+
+        guard childAppearanceTransitions[child]?.isAppearing != isAppearing else {
+            return
+        }
+
+        childAppearanceTransitions[child] = (isAppearing: isAppearing, animated: animated)
+
+        child.beginAppearanceTransition(isAppearing, animated: animated)
+
+        guard childAppearanceTransitions[child]?.isAppearing == isAppearing else {
+            return
+        }
+
+        if isAppearing {
+            childWillAppear(child, animated: animated)
+        } else {
+            childWillDisappear(child, animated: animated)
+        }
+    }
+
+    func endChildAppearanceTransition(for child: UIViewController) {
+
+        guard let transition = childAppearanceTransitions.removeValue(forKey: child) else {
+            return
+        }
+
+        child.endAppearanceTransition()
+
+        if transition.isAppearing {
+            childDidAppear(child, animated: transition.animated)
+        } else {
+            childDidDisappear(child, animated: transition.animated)
         }
     }
 }
@@ -521,12 +577,6 @@ fileprivate extension StateViewController {
     @discardableResult
     func beginStateTransition(to state: State, animated: Bool) -> Bool {
 
-        // We may not have made any changes to content view controllers, even though we have changed the state.
-        // Therefore, we must be prepare to end the state transition immediately.
-        defer {
-            endStateTransitionIfNeeded(animated: animated)
-        }
-
         // If we're transitioning between states, we need to abort and wait for the current state
         // transition to finish.
         guard isTransitioningBetweenStates == false else {
@@ -534,11 +584,14 @@ fileprivate extension StateViewController {
             return false
         }
 
+        // Note that we're transitioning from the current state. The outer optional marks the transition as active
+        // even when this is the initial transition and the previous state is `nil`.
+        transitioningFromState = .some(stateInternal)
+        isStateTransitionAnimated = animated
+        activeStateTransitionGeneration &+= 1
+
         // Invoke callback method, indicating that we will change state
         willTransition(to: state, animated: animated)
-
-        // Note that we're transitioning from a state
-        transitioningFromState = state
 
         // Update the current state
         stateInternal = state
@@ -584,28 +637,57 @@ fileprivate extension StateViewController {
     /// Performs the state transition, on a per-view controller basis, and ends the state transition if needed.
     func performStateTransition(animated: Bool) {
 
+        let generation = activeStateTransitionGeneration
+
         // Perform animations for each adding view controller
-        for viewController in viewControllersBeingAdded {
+        for viewController in Array(viewControllersBeingAdded) {
             performStateTransition(for: viewController, isAppearing: true) {
+                guard self.activeStateTransitionGeneration == generation else {
+                    return
+                }
+
                 self.didAddChild(viewController, animated: animated)
-                self.endStateTransitionIfNeeded(animated: animated)
+                self.endStateTransitionIfNeeded()
             }
         }
 
         // Perform animations for each removing view controller
-        for viewController in viewControllersBeingRemoved {
+        for viewController in Array(viewControllersBeingRemoved) {
             performStateTransition(for: viewController, isAppearing: false) {
+                guard self.activeStateTransitionGeneration == generation else {
+                    return
+                }
+
                 self.removeChild(viewController, animated: animated)
-                self.endStateTransitionIfNeeded(animated: animated)
+                self.endStateTransitionIfNeeded()
             }
+        }
+    }
+
+    func invalidateStateTransitionAnimations() {
+        guard viewControllersBeingAdded.isEmpty == false || viewControllersBeingRemoved.isEmpty == false else {
+            return
+        }
+
+        activeStateTransitionGeneration &+= 1
+
+        if #available(iOS 10, tvOS 10, *) {
+            for animator in stateTransitionAnimators.values {
+                animator.stopAnimation(true)
+            }
+            stateTransitionAnimators.removeAll()
+        }
+
+        for child in viewControllersBeingAdded.union(viewControllersBeingRemoved)
+            where (child is StateViewControllerTransitioning) == false {
+            child.view.layer.removeAnimation(forKey: "opacity")
         }
     }
 
     /// Ends the state transition if a) an apperance transition is not in progress, b) if no
     /// view controllers are in a state transition.
     ///
-    /// - Parameter animated: Whether the state transition was animated.
-    func endStateTransitionIfNeeded(animated: Bool) {
+    func endStateTransitionIfNeeded() {
 
         // We're not transitioning from a state, so what gives?
         guard let fromState = transitioningFromState else {
@@ -626,12 +708,23 @@ fileprivate extension StateViewController {
         // Note that we're no longer transitioning from a state
         transitioningFromState = nil
 
+        let animated = isStateTransitionAnimated
+        isStateTransitionAnimated = false
+
+        let pending = pendingState
+        pendingState = nil
+        let requestGeneration = stateTransitionRequestGeneration
+
         // Notify that we're finished transitioning
         didTransition(from: fromState, animated: animated)
 
+        // A request made by `didTransition` is newer than anything that was previously pending.
+        guard requestGeneration == stateTransitionRequestGeneration else {
+            return
+        }
+
         // If we still need another state, let's transition to it immediately.
-        if let (state, animated) = pendingState {
-            pendingState = nil
+        if let (state, animated) = pending {
             setNeedsStateTransition(to: state, animated: animated)
         }
     }
@@ -649,6 +742,8 @@ fileprivate extension StateViewController {
         for viewController: UIViewController,
         isAppearing: Bool,
         completion: @escaping () -> Void) {
+
+        let generation = activeStateTransitionGeneration
 
         if let transitioningProtocol = viewController as? StateViewControllerTransitioning {
             transitioningProtocol.stateTransitionWillBegin(isAppearing: isAppearing)
@@ -671,23 +766,33 @@ fileprivate extension StateViewController {
         let duration = transitioningProtocol?.stateTransitionDuration(isAppearing: isAppearing) ?? 0.35
         let delay = transitioningProtocol?.stateTransitionDelay(isAppearing: isAppearing) ?? 0
 
+        let finish = {
+            guard self.activeStateTransitionGeneration == generation else {
+                return
+            }
+
+            transitioningProtocol?.stateTransitionDidEnd(isAppearing: isAppearing)
+
+            if transitioningProtocol == nil {
+                viewController.view.alpha = isAppearing ? 1 : 0
+            }
+
+            completion()
+        }
+
         // For iOS 10 and above, we use UIViewPropertyAnimator
         if #available(iOS 10, tvOS 10, *) {
             let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1, animations: animations)
+            stateTransitionAnimators[viewController] = animator
 
-            animator.addCompletion { position in
-
-                guard position == .end else {
-                    return
+            animator.addCompletion { [weak self, weak animator] _ in
+                if let self = self,
+                   let animator = animator,
+                   self.stateTransitionAnimators[viewController] === animator {
+                    self.stateTransitionAnimators.removeValue(forKey: viewController)
                 }
 
-                transitioningProtocol?.stateTransitionDidEnd(isAppearing: isAppearing)
-
-                if transitioningProtocol == nil {
-                    viewController.view.alpha = isAppearing ? 1 : 0
-                }
-
-                completion()
+                finish()
             }
 
             animator.startAnimation(afterDelay: delay)
@@ -700,10 +805,8 @@ fileprivate extension StateViewController {
                 initialSpringVelocity: 0,
                 options: [],
                 animations: animations
-            ) { finished in
-                    if finished {
-                        completion()
-                    }
+            ) { _ in
+                finish()
             }
         }
     }
@@ -719,7 +822,10 @@ fileprivate extension StateViewController {
             viewController.view.translatesAutoresizingMaskIntoConstraints = true
             viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             viewController.view.bounds.size = childContainerView.bounds.size
-            viewController.view.center = childContainerView.center
+            viewController.view.center = CGPoint(
+                x: childContainerView.bounds.midX,
+                y: childContainerView.bounds.midY
+            )
 
             childContainerView.insertSubview(viewController.view, at: index)
             viewController.view.layoutIfNeeded()
@@ -770,11 +876,10 @@ fileprivate extension StateViewController {
 
         addChild(child)
 
-        // If we're not in an appearance transition, forward appearance methods.
-        // If we are, appearance methods will be forwarded at a later time
-        if isInAppearanceTransition == false {
-            childWillAppear(child, animated: animated)
-            child.beginAppearanceTransition(true, animated: animated)
+        // Children added while appearing or visible need their own appearance transition. Children added while
+        // disappearing or hidden should remain hidden without receiving appearance callbacks.
+        if appearanceTransitionIsAppearing ?? isVisible {
+            beginChildAppearanceTransition(for: child, isAppearing: true, animated: animated)
         }
 
         viewControllersBeingAdded.insert(child)
@@ -786,11 +891,9 @@ fileprivate extension StateViewController {
             return
         }
 
-        // If we're not in an appearance transition, forward appearance methods.
-        // If we are, appearance methods will be forwarded at a later time
+        // During a parent appearance transition, the matching end is forwarded by `viewDidAppear`.
         if isInAppearanceTransition == false {
-            child.endAppearanceTransition()
-            childDidAppear(child, animated: animated)
+            endChildAppearanceTransition(for: child)
         }
 
         child.didMove(toParent: self)
@@ -805,11 +908,9 @@ fileprivate extension StateViewController {
 
         child.willMove(toParent: nil)
 
-        // If we're not in an appearance transition, forward appearance methods.
-        // If we are, appearance methods will be forwarded at a later time
-        if isInAppearanceTransition == false {
-            childWillDisappear(child, animated: animated)
-            child.beginAppearanceTransition(false, animated: animated)
+        // A visible child or one already participating in the parent's appearance cycle must disappear cleanly.
+        if isVisible || childAppearanceTransitions[child] != nil {
+            beginChildAppearanceTransition(for: child, isAppearing: false, animated: animated)
         }
 
         viewControllersBeingRemoved.insert(child)
@@ -823,12 +924,8 @@ fileprivate extension StateViewController {
 
         child.view.removeFromSuperview()
 
-        // If we're not in an appearance transition, forward appearance methods.
-        // If we are, appearance methods will be forwarded at a later time
-        if isInAppearanceTransition == false {
-            child.endAppearanceTransition()
-            childDidDisappear(child, animated: animated)
-        }
+        // Removed children cannot be reached by the parent's later appearance forwarding.
+        endChildAppearanceTransition(for: child)
 
         child.removeFromParent()
         viewControllersBeingRemoved.remove(child)
