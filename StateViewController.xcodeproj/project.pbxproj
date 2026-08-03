@@ -20,8 +20,9 @@
          productRefGroup = "OBJ_12";
          projectDirPath = ".";
          targets = (
-            "StateViewController::StateViewController",
-            "StateViewController::SwiftPMPackageDescription"
+             "StateViewController::StateViewController",
+             "StateViewController::StateViewControllerTests",
+             "StateViewController::SwiftPMPackageDescription"
          );
       };
       "OBJ_10" = {
@@ -32,6 +33,8 @@
       "OBJ_11" = {
          isa = "PBXGroup";
          children = (
+            "OBJ_36",
+            "OBJ_47"
          );
          name = "Tests";
          path = "";
@@ -40,7 +43,8 @@
       "OBJ_12" = {
          isa = "PBXGroup";
          children = (
-            "StateViewController::StateViewController::Product"
+            "StateViewController::StateViewController::Product",
+            "OBJ_37"
          );
          name = "Products";
          path = "";
@@ -307,6 +311,105 @@
          isa = "PBXBuildFile";
          fileRef = "OBJ_6";
       };
+      "OBJ_36" = {
+         isa = "PBXFileReference";
+         path = "Tests/StateViewControllerTests/StateViewControllerTests.swift";
+         sourceTree = "SOURCE_ROOT";
+      };
+      "OBJ_47" = {
+         isa = "PBXFileReference";
+         path = "Tests/StateViewControllerTests/Info.plist";
+         sourceTree = "SOURCE_ROOT";
+      };
+      "OBJ_37" = {
+         isa = "PBXFileReference";
+         explicitFileType = "wrapper.cfbundle";
+         path = "StateViewControllerTests.xctest";
+         sourceTree = "BUILT_PRODUCTS_DIR";
+      };
+      "OBJ_38" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_36";
+      };
+      "OBJ_39" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_38"
+         );
+      };
+      "OBJ_40" = {
+         isa = "PBXBuildFile";
+         fileRef = "StateViewController::StateViewController::Product";
+      };
+      "OBJ_41" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+            "OBJ_40"
+         );
+      };
+      "OBJ_42" = {
+         isa = "PBXContainerItemProxy";
+         containerPortal = "OBJ_1";
+         proxyType = "1";
+         remoteGlobalIDString = "StateViewController::StateViewController";
+         remoteInfo = "StateViewController";
+      };
+      "OBJ_43" = {
+         isa = "PBXTargetDependency";
+         target = "StateViewController::StateViewController";
+         targetProxy = "OBJ_42";
+      };
+      "OBJ_44" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            INFOPLIST_FILE = "Tests/StateViewControllerTests/Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "8.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "@loader_path/Frameworks",
+               "@executable_path/Frameworks"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "StateViewControllerTests";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SDKROOT = "iphoneos";
+            SKIP_INSTALL = "YES";
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "StateViewControllerTests";
+         };
+         name = "Debug";
+      };
+      "OBJ_45" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            INFOPLIST_FILE = "Tests/StateViewControllerTests/Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "8.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "@loader_path/Frameworks",
+               "@executable_path/Frameworks"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "StateViewControllerTests";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SDKROOT = "iphoneos";
+            SKIP_INSTALL = "YES";
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "StateViewControllerTests";
+         };
+         name = "Release";
+      };
+      "OBJ_46" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_44",
+            "OBJ_45"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
+      };
       "OBJ_4" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
@@ -407,6 +510,21 @@
          productName = "StateViewController";
          productReference = "StateViewController::StateViewController::Product";
          productType = "com.apple.product-type.framework";
+      };
+      "StateViewController::StateViewControllerTests" = {
+         isa = "PBXNativeTarget";
+         buildConfigurationList = "OBJ_46";
+         buildPhases = (
+            "OBJ_39",
+            "OBJ_41"
+         );
+         dependencies = (
+            "OBJ_43"
+         );
+         name = "StateViewControllerTests";
+         productName = "StateViewControllerTests";
+         productReference = "OBJ_37";
+         productType = "com.apple.product-type.bundle.unit-test";
       };
       "StateViewController::StateViewController::Product" = {
          isa = "PBXFileReference";
